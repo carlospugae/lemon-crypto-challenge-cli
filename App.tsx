@@ -7,12 +7,12 @@
 
 import { StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navigator from './navigator';
+import Navigation from '@/navigation/navigation';
 
 function App() {
   return (
     <SafeAreaProvider style={styles.container}>
-      <Navigator />
+      <Navigation />
     </SafeAreaProvider>
   );
 }
