@@ -167,6 +167,7 @@ const Details = () => {
     setRefreshing(true);
     getDetails();
   };
+  console.log({ crypto });
 
   if (loading && !refreshing) {
     return (
@@ -208,82 +209,33 @@ const Details = () => {
       {/* Header Card */}
       <View style={styles.card}>
         <View style={styles.headerRow}>
-          <View style={styles.headerLeft}>
-            <View style={styles.iconCircle}>
-              <Text style={styles.iconText} accessibilityRole="image">
-                {getCryptoIcon(crypto.symbol)}
-              </Text>
-            </View>
-            <View style={styles.headerTextContainer}>
-              <View style={styles.titleRow}>
-                <Text
-                  style={styles.cryptoName}
-                  accessibilityRole="header"
-                  numberOfLines={1}
-                >
-                  {crypto.name}
-                </Text>
-                <View style={styles.badgeContainer}>
-                  <Badge
-                    variant="secondary"
-                    style={styles.symbolBadge}
-                    textStyle={styles.symbolBadgeText}
-                  >
-                    {crypto.symbol}
-                  </Badge>
-                  <Badge
-                    variant="primary"
-                    style={styles.rankBadge}
-                    textStyle={styles.rankBadgeText}
-                  >
-                    Rank #{crypto.cmc_rank}
-                  </Badge>
-                </View>
-              </View>
-            </View>
+          {/* <View style={styles.iconContainer}> */}
+          <View style={styles.badgeContainer}>
+            <Badge
+              variant="secondary"
+              style={styles.symbolBadge}
+              textStyle={styles.symbolBadgeText}
+            >
+              {crypto.symbol}
+            </Badge>
+            <Badge
+              variant="primary"
+              style={styles.rankBadge}
+              textStyle={styles.rankBadgeText}
+            >
+              {`Rank #${crypto.cmc_rank}`}
+            </Badge>
           </View>
-          <View style={styles.headerActions}>
-            <TouchableOpacity
-              onPress={() => toggleFavorite(id)}
-              accessibilityRole="button"
-              accessibilityLabel={
-                isFavorite
-                  ? `Unfavorite ${crypto.name}`
-                  : `Favorite ${crypto.name}`
-              }
-              style={styles.actionButton}
-            >
-              {isFavorite ? (
-                <FontAwesome
-                  name="star"
-                  size={20}
-                  color={theme.colors.warning[400]}
-                  accessibilityLabel="Favorited"
-                />
-              ) : (
-                <Feather
-                  name="star"
-                  size={20}
-                  color={theme.colors.gray[400]}
-                  accessibilityLabel="Not favorited"
-                />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityLabel="Set alert for price changes"
-              style={styles.actionButton}
-            >
-              <Feather name="bell" size={20} color={theme.colors.gray[400]} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityLabel="Share crypto details"
-              style={styles.actionButton}
-            >
-              <Feather name="share" size={20} color={theme.colors.gray[400]} />
-            </TouchableOpacity>
+          {/* </View> */}
+
+          <View style={styles.iconCircle}>
+            <Text style={styles.iconText} accessibilityRole="image">
+              {getCryptoIcon(crypto.symbol)}
+            </Text>
           </View>
+          <Text style={styles.cryptoName} accessibilityRole="header">
+            {crypto.name}
+          </Text>
         </View>
         {/* Price Section */}
         <View style={styles.priceSection}>
@@ -413,16 +365,9 @@ const styles = StyleSheet.create({
     ...theme.shadows.md,
   },
   headerRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing.xl,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    flex: 1,
-    marginRight: theme.spacing.lg,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   iconCircle: {
     width: 72,
@@ -431,8 +376,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.warning[400],
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: theme.spacing.lg,
-    flexShrink: 0,
   },
   iconText: {
     color: theme.colors.white,
@@ -454,12 +397,9 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSize['3xl'],
     fontWeight: theme.fontWeight.bold,
     color: theme.colors.gray[900],
-    flexShrink: 1,
-  },
-  badgeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.sm,
+    textAlign: 'center',
+    marginTop: theme.spacing.sm,
+    marginBottom: 0,
     flexShrink: 0,
   },
   symbolBadge: {
@@ -474,7 +414,7 @@ const styles = StyleSheet.create({
   },
   symbolBadgeText: {
     fontSize: theme.fontSize.sm,
-    color: theme.colors.gray[700],
+    color: theme.colors.gray[900],
     fontWeight: theme.fontWeight.semibold,
     textAlign: 'center',
   },
@@ -516,7 +456,7 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.lg,
   },
   priceText: {
-    fontSize: theme.fontSize['5xl'],
+    fontSize: theme.fontSize['4xl'],
     fontWeight: theme.fontWeight.bold,
     color: theme.colors.gray[900],
     marginBottom: theme.spacing.md,
@@ -599,6 +539,11 @@ const styles = StyleSheet.create({
   supplyProgressFooterText: {
     fontSize: theme.fontSize.xs,
     color: theme.colors.gray[500],
+  },
+  badgeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
 });
 

@@ -38,6 +38,9 @@ const Badge: React.FC<BadgeProps> = ({
   style,
   textStyle,
 }) => {
+  // Debug: Log children prop
+  // eslint-disable-next-line no-console
+  console.log('Badge children:', children);
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
@@ -95,7 +98,7 @@ const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = getVariantStyles();
-
+  console.log(variantStyles);
   return (
     <View
       style={[styles.container, variantStyles.container, style]}
@@ -121,7 +124,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: theme.fontSize.xs,
     fontWeight: theme.fontWeight.medium,
-    lineHeight: theme.lineHeight.tight,
   },
 });
 
