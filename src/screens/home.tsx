@@ -4,12 +4,31 @@ import {
   FlatList,
   ActivityIndicator,
   Pressable,
+  TextInput,
 } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCoinMarketCapTop100 } from '../hooks/useCoinMarketCapTop100';
 
 const Home = () => {
   const { data, isLoading, isError, error } = useCoinMarketCapTop100();
+  const [filter, setFilter] = useState('');
+  const [debouncedFilter, setDebouncedFilter] = useState('');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedFilter(filter);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [filter]);
+
+  const filteredData = data?.filter(item => {
+    const search = debouncedFilter.trim().toLowerCase();
+    if (!search) return true;
+    return (
+      item.name.toLowerCase().includes(search) ||
+      item.symbol.toLowerCase().includes(search)
+    );
+  });
 
   if (isLoading) {
     return (
@@ -30,8 +49,26 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
+      <TextInput
+        value={filter}
+        onChangeText={setFilter}
+        placeholder="Filter by name or symbol"
+        style={{
+          borderWidth: 1,
+          borderColor: '#ccc',
+          borderRadius: 8,
+          padding: 10,
+          marginBottom: 16,
+        }}
+        accessible={true}
+        accessibilityLabel="Filter cryptocurrencies by name or symbol"
+        returnKeyType="search"
+        autoCapitalize="none"
+        autoCorrect={false}
+        clearButtonMode="while-editing"
+      />
       <FlatList
-        data={data}
+        data={filteredData}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <Pressable
