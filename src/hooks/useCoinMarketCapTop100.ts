@@ -9,6 +9,7 @@ export type CoinMarketCapCrypto = {
     USD: {
       price: number;
       market_cap: number;
+      percent_change_24h: number;
     };
   };
 };

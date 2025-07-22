@@ -3,15 +3,16 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
-  Pressable,
-  TextInput,
   Switch,
+  StyleSheet,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCoinMarketCapTop100 } from '../hooks/useCoinMarketCapTop100';
 import { useFavoritesStore } from '../store/useFavoritesStore';
+import { theme } from '../theme';
+import { CryptoCard, SearchInput } from '../components';
 
 type RootStackParamList = {
   Home: undefined;
@@ -24,141 +25,207 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<
   'Home'
 >;
 
+/**
+ * Home screen component displaying the list of top cryptocurrencies
+ * Features search, filtering, and favorites functionality
+ */
 const Home = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { data, isLoading, isError, error } = useCoinMarketCapTop100();
-  const [filter, setFilter] = useState('');
-  const [debouncedFilter, setDebouncedFilter] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
 
   const favorites = useFavoritesStore(state => state.favorites);
   const toggleFavorite = useFavoritesStore(state => state.toggleFavorite);
   const isFavorite = useFavoritesStore(state => state.isFavorite);
 
+  /**
+   * Handle navigation to crypto details screen
+   * @param id - The cryptocurrency ID
+   */
   const handleCryptoPress = (id: string) => {
     navigation.navigate('Details', { id });
   };
 
+  /**
+   * Handle toggling favorite status for a cryptocurrency
+   * @param id - The cryptocurrency ID
+   */
+  const handleToggleFavorite = (id: string) => {
+    toggleFavorite(id);
+  };
+
+  // Debounce search query to avoid excessive filtering
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedFilter(filter);
+      setDebouncedSearchQuery(searchQuery);
     }, 300);
     return () => clearTimeout(handler);
-  }, [filter]);
+  }, [searchQuery]);
 
+  // Filter data based on search query and favorites toggle
   const filteredData = data?.filter(item => {
-    const search = debouncedFilter.trim().toLowerCase();
-    const matchesFilter =
+    const search = debouncedSearchQuery.trim().toLowerCase();
+    const matchesSearch =
       !search ||
       item.name.toLowerCase().includes(search) ||
       item.symbol.toLowerCase().includes(search);
     const matchesFavorite = !showFavorites || isFavorite(item.id);
-    return matchesFilter && matchesFavorite;
+    return matchesSearch && matchesFavorite;
   });
+
+  // Transform data for CryptoCard component
+  const transformedData = filteredData?.map(item => ({
+    id: item.id,
+    name: item.name,
+    symbol: item.symbol,
+    price: item.quote.USD.price,
+    marketCap: item.quote.USD.market_cap,
+    change24h: item.quote.USD.percent_change_24h,
+  }));
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-        <Text>Loading top cryptocurrencies...</Text>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={theme.colors.primary[500]} />
+        <Text style={styles.loadingText}>Loading top cryptocurrencies...</Text>
       </View>
     );
   }
 
   if (isError) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Error: {error?.message || 'Failed to load data.'}</Text>
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>
+          Error: {error?.message || 'Failed to load data.'}
+        </Text>
       </View>
     );
   }
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <View
-        style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
-      >
-        <TextInput
-          value={filter}
-          onChangeText={setFilter}
-          placeholder="Filter by name or symbol"
-          style={{
-            flex: 1,
-            borderWidth: 1,
-            borderColor: '#ccc',
-            borderRadius: 8,
-            padding: 10,
-            marginRight: 8,
-          }}
-          accessible={true}
-          accessibilityLabel="Filter cryptocurrencies by name or symbol"
-          returnKeyType="search"
-          autoCapitalize="none"
-          autoCorrect={false}
-          clearButtonMode="while-editing"
-        />
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Switch
-            value={showFavorites}
-            onValueChange={setShowFavorites}
-            accessibilityLabel="Show only favorites"
+    <View style={styles.container}>
+      {/* Search and Filter Header */}
+      <View style={styles.header}>
+        <View style={styles.searchContainer}>
+          <SearchInput
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search coins..."
           />
-          <Text style={{ marginLeft: 4 }}>Show Favorites</Text>
+          <View style={styles.filterContainer}>
+            <Switch
+              value={showFavorites}
+              onValueChange={setShowFavorites}
+              trackColor={{
+                false: theme.colors.gray[300],
+                true: theme.colors.primary[600],
+              }}
+              thumbColor={theme.colors.white}
+              accessible={true}
+              accessibilityLabel="Show only favorites"
+              accessibilityRole="switch"
+            />
+            <Text style={styles.filterLabel}>Favorites</Text>
+          </View>
         </View>
       </View>
-      <FlatList
-        data={filteredData}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <Pressable
-            style={{
-              padding: 12,
-              borderBottomWidth: 1,
-              borderBottomColor: '#eee',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel={`${item.name} (${
-              item.symbol
-            }), Price: $${item.quote.USD.price.toFixed(
-              2,
-            )}, Market Cap: $${item.quote.USD.market_cap.toLocaleString()}`}
-            tabIndex={0}
-            onPress={() => handleCryptoPress(item.id)}
-          >
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
-                {item.name} ({item.symbol})
-              </Text>
-              <Text>Price: ${item.quote.USD.price.toFixed(2)}</Text>
-              <Text>
-                Market Cap: ${item.quote.USD.market_cap.toLocaleString()}
-              </Text>
+
+      {/* Crypto List */}
+      <View style={styles.listContainer}>
+        <FlatList
+          data={transformedData}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <CryptoCard
+              crypto={item}
+              isFavorite={isFavorite(item.id)}
+              onPress={handleCryptoPress}
+              onToggleFavorite={handleToggleFavorite}
+            />
+          )}
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>No cryptocurrencies found.</Text>
             </View>
-            <Pressable
-              onPress={() => toggleFavorite(item.id)}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityLabel={
-                isFavorite(item.id)
-                  ? `Unfavorite ${item.name}`
-                  : `Favorite ${item.name}`
-              }
-              style={{ marginLeft: 12 }}
-            >
-              <Text style={{ fontSize: 24 }}>
-                {isFavorite(item.id) ? '★' : '☆'}
-              </Text>
-            </Pressable>
-          </Pressable>
-        )}
-        ListEmptyComponent={<Text>No cryptocurrencies found.</Text>}
-      />
+          }
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.gray[50],
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.gray[50],
+  },
+  loadingText: {
+    marginTop: theme.spacing.md,
+    fontSize: theme.fontSize.base,
+    color: theme.colors.gray[600],
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.gray[50],
+  },
+  errorText: {
+    fontSize: theme.fontSize.base,
+    color: theme.colors.error[600],
+    textAlign: 'center',
+    paddingHorizontal: theme.spacing.lg,
+  },
+  header: {
+    backgroundColor: theme.colors.white,
+    paddingHorizontal: theme.spacing['2xl'],
+    paddingVertical: theme.spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.gray[100],
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.lg,
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+  },
+  filterLabel: {
+    fontSize: theme.fontSize.sm,
+    fontWeight: theme.fontWeight.medium,
+    color: theme.colors.gray[700],
+  },
+  listContainer: {
+    flex: 1,
+  },
+  listContent: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: theme.spacing['3xl'],
+  },
+  emptyText: {
+    fontSize: theme.fontSize.base,
+    color: theme.colors.gray[500],
+    textAlign: 'center',
+  },
+});
 
 export default Home;
