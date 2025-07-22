@@ -21,8 +21,8 @@ export const SCREENS = {
 
 const RootStack = createNativeStackNavigator({
   screens: {
-    [SCREENS.HOME]: Home,
     [SCREENS.LOGIN]: Login,
+    [SCREENS.HOME]: Home,
     [SCREENS.DETAILS]: Details,
   },
 });
