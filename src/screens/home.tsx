@@ -8,10 +8,24 @@ import {
   Switch,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCoinMarketCapTop100 } from '../hooks/useCoinMarketCapTop100';
 import { useFavoritesStore } from '../store/useFavoritesStore';
 
+type RootStackParamList = {
+  Home: undefined;
+  Details: { id: string };
+  Login: undefined;
+};
+
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
 const Home = () => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const { data, isLoading, isError, error } = useCoinMarketCapTop100();
   const [filter, setFilter] = useState('');
   const [debouncedFilter, setDebouncedFilter] = useState('');
@@ -20,6 +34,10 @@ const Home = () => {
   const favorites = useFavoritesStore(state => state.favorites);
   const toggleFavorite = useFavoritesStore(state => state.toggleFavorite);
   const isFavorite = useFavoritesStore(state => state.isFavorite);
+
+  const handleCryptoPress = (id: string) => {
+    navigation.navigate('Details', { id });
+  };
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -109,7 +127,7 @@ const Home = () => {
               2,
             )}, Market Cap: $${item.quote.USD.market_cap.toLocaleString()}`}
             tabIndex={0}
-            onPress={() => {}}
+            onPress={() => handleCryptoPress(item.id)}
           >
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
