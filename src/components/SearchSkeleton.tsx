@@ -1,17 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { theme } from '../theme';
 
 interface SearchSkeletonProps {
   /**
    * Additional styles for the skeleton container
    */
-  style?: any;
+  style?: object;
 }
 
 /**
  * SearchSkeleton component for displaying loading state that matches SearchInput structure
- * Uses animated opacity to create a shimmer effect
+ * Uses react-native-skeleton-placeholder for best-practice skeletons
  *
  * @example
  * ```tsx
@@ -19,49 +19,23 @@ interface SearchSkeletonProps {
  * ```
  */
 const SearchSkeleton: React.FC<SearchSkeletonProps> = ({ style }) => {
-  const animatedValue = React.useRef(new Animated.Value(0.3)).current;
-
-  React.useEffect(() => {
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(animatedValue, {
-          toValue: 0.7,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(animatedValue, {
-          toValue: 0.3,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-
-    animation.start();
-
-    return () => animation.stop();
-  }, [animatedValue]);
-
   return (
-    <Animated.View
-      style={[styles.container, { opacity: animatedValue }, style]}
+    <SkeletonPlaceholder
+      backgroundColor={theme.colors.gray[200]}
+      highlightColor={theme.colors.gray[100]}
+      borderRadius={theme.borderRadius.lg}
+      speed={800}
     >
-      <View style={styles.inputSkeleton} />
-    </Animated.View>
+      <SkeletonPlaceholder.Item style={{ flex: 1, ...style }}>
+        <SkeletonPlaceholder.Item
+          height={44}
+          borderRadius={theme.borderRadius.lg}
+          borderWidth={1}
+          borderColor={theme.colors.gray[200]}
+        />
+      </SkeletonPlaceholder.Item>
+    </SkeletonPlaceholder>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  inputSkeleton: {
-    height: 44,
-    backgroundColor: theme.colors.gray[200],
-    borderRadius: theme.borderRadius.lg,
-    borderWidth: 1,
-    borderColor: theme.colors.gray[200],
-  },
-});
 
 export default SearchSkeleton;
