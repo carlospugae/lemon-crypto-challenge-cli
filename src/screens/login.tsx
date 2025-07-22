@@ -1,82 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Pressable, Text, ActivityIndicator, Alert } from 'react-native';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import { GOOGLE_CONFIG } from '../config/google';
-
-GoogleSignin.configure({
-  webClientId: GOOGLE_CONFIG.webClientId,
-  iosClientId: GOOGLE_CONFIG.iosClientId,
-  offlineAccess: false,
-  scopes: GOOGLE_CONFIG.scopes,
-});
-
-const performGoogleSignIn = async () => {
-  try {
-    // Check if Play Services are available (Android only)
-    await GoogleSignin.hasPlayServices();
-
-    // Perform the sign-in
-    const response = await GoogleSignin.signIn();
-
-    // In v15.0.0, the response structure is { type: 'success', data: User }
-    if (response.type === 'success' && response.data) {
-      return response.data;
-    } else {
-      throw new Error('Sign-in was not successful');
-    }
-  } catch (error: any) {
-    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      throw new Error('Sign-in was cancelled');
-    } else if (error.code === statusCodes.IN_PROGRESS) {
-      throw new Error('Sign-in is already in progress');
-    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      throw new Error('Play Services are not available');
-    } else {
-      throw new Error(error.message || 'Sign-in failed');
-    }
-  }
-};
+import { useGoogleAuth } from '../hooks/useGoogleAuth';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Login() {
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const { userInfo, loading, error, signIn } = useGoogleAuth();
+  const navigation = useNavigation();
 
   const handleGoogleLogin = async () => {
-    setLoading(true);
-    setError('');
-
     try {
-      const userInfo = await performGoogleSignIn();
+      await signIn();
 
-      console.log('Google Sign-In successful:', userInfo);
-
-      // Here you would typically:
-      // 1. Send the idToken to your backend for verification
-      // 2. Store the user information in your app state
-      // 3. Navigate to the main app screen
-
-      // Example of what you might do with the user info:
-      if (userInfo.idToken) {
+      // Show success message if user info is available
+      if (userInfo?.user?.name) {
+        Alert.alert('Success!', `Welcome ${userInfo.user.name}!`, [
+          { text: 'OK' },
+        ]);
+      }
+      navigation.navigate('Home');
+      if (userInfo?.idToken) {
         // Send to your backend API
         // const response = await authAPI.validateToken({
         //   token: userInfo.idToken,
         //   email: userInfo.user.email,
         // });
-
-        // For now, just show success
-        Alert.alert('Success!', `Welcome ${userInfo.user.name}!`, [
-          { text: 'OK' },
-        ]);
       }
     } catch (apiError: any) {
-      const errorMessage = apiError?.message || 'Something went wrong';
-      setError(errorMessage);
-      console.error('Google Sign-In error:', apiError);
-    } finally {
-      setLoading(false);
+      // Error is already handled in the hook, but you can add additional handling here
+      console.error('Login component error:', apiError);
     }
   };
 

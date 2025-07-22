@@ -13,6 +13,7 @@ declare global {
     interface RootParamList extends StaticParamList<typeof RootStack> {}
   }
 }
+
 export const SCREENS = {
   HOME: 'Home',
   LOGIN: 'Login',
@@ -21,7 +22,12 @@ export const SCREENS = {
 
 const RootStack = createNativeStackNavigator({
   screens: {
-    [SCREENS.LOGIN]: Login,
+    [SCREENS.LOGIN]: {
+      screen: Login,
+      options: {
+        headerShown: false,
+      },
+    },
     [SCREENS.HOME]: Home,
     [SCREENS.DETAILS]: Details,
   },
@@ -29,6 +35,4 @@ const RootStack = createNativeStackNavigator({
 
 const Navigation = createStaticNavigation(RootStack);
 
-export default function App() {
-  return <Navigation />;
-}
+export default Navigation;

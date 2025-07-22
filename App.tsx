@@ -4,15 +4,20 @@
  *
  * @format
  */
-
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Navigation from '@/navigation/navigation';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <SafeAreaProvider style={styles.container}>
-      <Navigation />
+      <QueryClientProvider client={queryClient}>
+        <Navigation />
+      </QueryClientProvider>
     </SafeAreaProvider>
   );
 }
