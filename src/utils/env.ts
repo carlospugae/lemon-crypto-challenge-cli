@@ -1,9 +1,10 @@
-import { GOOGLE_WEB_CLIENT_ID, GOOGLE_IOS_CLIENT_ID } from '@env';
+import { GOOGLE_WEB_CLIENT_ID, GOOGLE_IOS_CLIENT_ID, CMC_API_KEY } from '@env';
 
 export const validateEnvironmentVariables = (): void => {
   const requiredEnvVars = {
     GOOGLE_WEB_CLIENT_ID,
     GOOGLE_IOS_CLIENT_ID,
+    CMC_API_KEY,
   };
 
   const missingVars = Object.entries(requiredEnvVars)
@@ -26,4 +27,5 @@ export const validateEnvironmentVariables = (): void => {
 export const getEnvironmentVariables = () => ({
   GOOGLE_WEB_CLIENT_ID,
   GOOGLE_IOS_CLIENT_ID,
+  CMC_API_KEY,
 });
