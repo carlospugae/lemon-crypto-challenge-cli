@@ -12,7 +12,13 @@ import { useFavoritesStore } from '@/store/favorites';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '@/theme';
-import { CryptoCard, SearchInput, Text } from '@/components';
+import {
+  CryptoCard,
+  CryptoCardSkeleton,
+  SearchInput,
+  SearchSkeleton,
+  Text,
+} from '@/components';
 
 type RootStackParamList = {
   Home: undefined;
@@ -68,11 +74,19 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={theme.colors.primary[500]} />
-        <Text variant="body" color="gray.600" style={styles.loadingText}>
-          Loading top cryptocurrencies...
-        </Text>
+      <View style={styles.container}>
+        <SearchSkeleton />
+        <View style={styles.listContainer}>
+          <FlatList
+            data={Array.from({ length: 10 }, (_, index) => ({
+              id: index.toString(),
+            }))}
+            keyExtractor={item => item.id}
+            renderItem={() => <CryptoCardSkeleton />}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       </View>
     );
   }
@@ -146,15 +160,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.gray[50],
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.colors.gray[50],
-  },
-  loadingText: {
-    marginTop: theme.spacing.md,
   },
   errorContainer: {
     flex: 1,

@@ -113,7 +113,7 @@ describe('Home Component', () => {
   });
 
   describe('Loading State', () => {
-    it('should display loading indicator and message when data is loading', () => {
+    it('should display skeleton components when data is loading', () => {
       mockUseFetchCryptos.mockReturnValue({
         data: undefined,
         isLoading: true,
@@ -123,10 +123,14 @@ describe('Home Component', () => {
 
       renderHome();
 
-      expect(screen.getByText('Loading top cryptocurrencies...')).toBeTruthy();
+      // Check for skeleton components instead of loading text
+      expect(screen.getByTestId('search-skeleton-container')).toBeTruthy();
+      expect(
+        screen.getAllByTestId('crypto-card-skeleton-container'),
+      ).toHaveLength(10);
     });
 
-    it('should show ActivityIndicator when loading', () => {
+    it('should show skeleton placeholders when loading', () => {
       mockUseFetchCryptos.mockReturnValue({
         data: undefined,
         isLoading: true,
@@ -136,8 +140,9 @@ describe('Home Component', () => {
 
       renderHome();
 
-      // Note: ActivityIndicator doesn't have a testID by default, so we check for the loading text
-      expect(screen.getByText('Loading top cryptocurrencies...')).toBeTruthy();
+      // Check for skeleton placeholders
+      expect(screen.getAllByTestId('skeleton-placeholder')).toBeTruthy();
+      expect(screen.getAllByTestId('skeleton-item')).toBeTruthy();
     });
   });
 
