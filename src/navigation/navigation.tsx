@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Details from '@/screens/details';
 import Login from '@/screens/login';
 import Home from '@/screens/home';
+import { useIsSignedIn, useIsSignedOut } from '@/context/AuthContext';
 
 declare global {
   namespace ReactNavigation {
@@ -20,15 +21,25 @@ export const SCREENS = {
 };
 
 const RootStack = createNativeStackNavigator({
-  screens: {
-    [SCREENS.HOME]: Home,
-    [SCREENS.LOGIN]: Login,
-    [SCREENS.DETAILS]: Details,
+  groups: {
+    authenticated: {
+      if: useIsSignedIn,
+      screens: {
+        [SCREENS.HOME]: Home,
+        [SCREENS.DETAILS]: Details,
+      },
+    },
+    unauthenticated: {
+      if: useIsSignedOut,
+      screens: {
+        [SCREENS.LOGIN]: Login,
+      },
+    },
   },
 });
 
-const Navigation = createStaticNavigation(RootStack);
+const NavigationStack = createStaticNavigation(RootStack);
 
-export default function App() {
-  return <Navigation />;
+export default function Navigation() {
+  return <NavigationStack />;
 }

@@ -5,14 +5,18 @@
  * @format
  */
 
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navigation from '@/navigation/navigation';
+import Navigation from './src/navigation/navigation';
+import { AuthProvider } from './src/context/AuthContext';
 
 function App() {
   return (
     <SafeAreaProvider style={styles.container}>
-      <Navigation />
+      <AuthProvider>
+        <Navigation />
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }
