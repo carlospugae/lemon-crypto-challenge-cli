@@ -47,6 +47,7 @@ const defaultContextValue: AuthContextType = {
 };
 
 const AuthContext = createContext<AuthContextType>(defaultContextValue);
+export { AuthContext };
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
