@@ -55,6 +55,7 @@ const mockCryptoData: CryptoToken[] = [
       USD: {
         price: 45000.5,
         market_cap: 850000000000,
+        percent_change_24h: 1.2,
       },
     },
   },
@@ -66,6 +67,7 @@ const mockCryptoData: CryptoToken[] = [
       USD: {
         price: 3200.75,
         market_cap: 380000000000,
+        percent_change_24h: 1.2,
       },
     },
   },
@@ -77,6 +79,7 @@ const mockCryptoData: CryptoToken[] = [
       USD: {
         price: 1.25,
         market_cap: 40000000000,
+        percent_change_24h: 1.2,
       },
     },
   },
@@ -180,33 +183,31 @@ describe('Home Component', () => {
     it('should render cryptocurrency list when data is loaded successfully', () => {
       renderHome();
 
-      expect(screen.getByText('Bitcoin (BTC)')).toBeTruthy();
-      expect(screen.getByText('Ethereum (ETH)')).toBeTruthy();
-      expect(screen.getByText('Cardano (ADA)')).toBeTruthy();
+      expect(screen.getByText('Bitcoin')).toBeTruthy();
+      expect(screen.getByText('Ethereum')).toBeTruthy();
+      expect(screen.getByText('Cardano')).toBeTruthy();
     });
 
     it('should display correct price information for each cryptocurrency', () => {
       renderHome();
 
-      expect(screen.getByText('Price: $45000.50')).toBeTruthy();
-      expect(screen.getByText('Price: $3200.75')).toBeTruthy();
-      expect(screen.getByText('Price: $1.25')).toBeTruthy();
+      expect(screen.getByText('$45000.50')).toBeTruthy();
+      expect(screen.getByText('$3200.75')).toBeTruthy();
+      expect(screen.getByText('$1.25')).toBeTruthy();
     });
 
     it('should display correct market cap information for each cryptocurrency', () => {
       renderHome();
 
-      expect(screen.getByText('Market Cap: $850,000,000,000')).toBeTruthy();
-      expect(screen.getByText('Market Cap: $380,000,000,000')).toBeTruthy();
-      expect(screen.getByText('Market Cap: $40,000,000,000')).toBeTruthy();
+      expect(screen.getByText('Market Cap: $850.00B')).toBeTruthy();
+      expect(screen.getByText('Market Cap: $380.00B')).toBeTruthy();
+      expect(screen.getByText('Market Cap: $40.00B')).toBeTruthy();
     });
 
     it('should render search input field', () => {
       renderHome();
 
-      const searchInput = screen.getByPlaceholderText(
-        'Filter by name or symbol',
-      );
+      const searchInput = screen.getByPlaceholderText('Search coins...');
       expect(searchInput).toBeTruthy();
     });
   });
@@ -224,59 +225,51 @@ describe('Home Component', () => {
     it('should filter cryptocurrencies by name', async () => {
       renderHome();
 
-      const searchInput = screen.getByPlaceholderText(
-        'Filter by name or symbol',
-      );
+      const searchInput = screen.getByPlaceholderText('Search coins...');
 
       fireEvent.changeText(searchInput, 'Bitcoin');
 
       await waitFor(() => {
-        expect(screen.getByText('Bitcoin (BTC)')).toBeTruthy();
+        expect(screen.getByText('Bitcoin')).toBeTruthy();
       });
 
-      expect(screen.queryByText('Ethereum (ETH)')).toBeNull();
-      expect(screen.queryByText('Cardano (ADA)')).toBeNull();
+      expect(screen.queryByText('Ethereum')).toBeNull();
+      expect(screen.queryByText('Cardano')).toBeNull();
     });
 
     it('should filter cryptocurrencies by symbol', async () => {
       renderHome();
 
-      const searchInput = screen.getByPlaceholderText(
-        'Filter by name or symbol',
-      );
+      const searchInput = screen.getByPlaceholderText('Search coins...');
 
       fireEvent.changeText(searchInput, 'ETH');
 
       await waitFor(() => {
-        expect(screen.getByText('Ethereum (ETH)')).toBeTruthy();
+        expect(screen.getByText('Ethereum')).toBeTruthy();
       });
 
-      expect(screen.queryByText('Bitcoin (BTC)')).toBeNull();
-      expect(screen.queryByText('Cardano (ADA)')).toBeNull();
+      expect(screen.queryByText('Bitcoin')).toBeNull();
+      expect(screen.queryByText('Cardano')).toBeNull();
     });
 
     it('should filter cryptocurrencies case-insensitively', async () => {
       renderHome();
 
-      const searchInput = screen.getByPlaceholderText(
-        'Filter by name or symbol',
-      );
+      const searchInput = screen.getByPlaceholderText('Search coins...');
 
       fireEvent.changeText(searchInput, 'bitcoin');
 
       await waitFor(() => {
-        expect(screen.getByText('Bitcoin (BTC)')).toBeTruthy();
+        expect(screen.getByText('Bitcoin')).toBeTruthy();
       });
 
-      expect(screen.queryByText('Ethereum (ETH)')).toBeNull();
+      expect(screen.queryByText('Ethereum')).toBeNull();
     });
 
     it('should show all cryptocurrencies when filter is empty', async () => {
       renderHome();
 
-      const searchInput = screen.getByPlaceholderText(
-        'Filter by name or symbol',
-      );
+      const searchInput = screen.getByPlaceholderText('Search coins...');
 
       // First filter to show only Bitcoin
       fireEvent.changeText(searchInput, 'Bitcoin');
@@ -285,41 +278,37 @@ describe('Home Component', () => {
       fireEvent.changeText(searchInput, '');
 
       await waitFor(() => {
-        expect(screen.getByText('Bitcoin (BTC)')).toBeTruthy();
-        expect(screen.getByText('Ethereum (ETH)')).toBeTruthy();
-        expect(screen.getByText('Cardano (ADA)')).toBeTruthy();
+        expect(screen.getByText('Bitcoin')).toBeTruthy();
+        expect(screen.getByText('Ethereum')).toBeTruthy();
+        expect(screen.getByText('Cardano')).toBeTruthy();
       });
     });
 
     it('should show "No cryptocurrencies found" when filter has no matches', async () => {
       renderHome();
 
-      const searchInput = screen.getByPlaceholderText(
-        'Filter by name or symbol',
-      );
+      const searchInput = screen.getByPlaceholderText('Search coins...');
 
       fireEvent.changeText(searchInput, 'NonExistentCrypto');
 
       await waitFor(() => {
         expect(screen.getByText('No cryptocurrencies found.')).toBeTruthy();
-        expect(screen.queryByText('Bitcoin (BTC)')).toBeNull();
-        expect(screen.queryByText('Ethereum (ETH)')).toBeNull();
-        expect(screen.queryByText('Cardano (ADA)')).toBeNull();
+        expect(screen.queryByText('Bitcoin')).toBeNull();
+        expect(screen.queryByText('Ethereum')).toBeNull();
+        expect(screen.queryByText('Cardano')).toBeNull();
       });
     });
 
     it('should trim whitespace from filter input', async () => {
       renderHome();
 
-      const searchInput = screen.getByPlaceholderText(
-        'Filter by name or symbol',
-      );
+      const searchInput = screen.getByPlaceholderText('Search coins...');
 
       fireEvent.changeText(searchInput, '  Bitcoin  ');
 
       await waitFor(() => {
-        expect(screen.getByText('Bitcoin (BTC)')).toBeTruthy();
-        expect(screen.queryByText('Ethereum (ETH)')).toBeNull();
+        expect(screen.getByText('Bitcoin')).toBeTruthy();
+        expect(screen.queryByText('Ethereum')).toBeNull();
       });
     });
   });
@@ -337,9 +326,7 @@ describe('Home Component', () => {
     it('should have proper accessibility label for search input', () => {
       renderHome();
 
-      const searchInput = screen.getByLabelText(
-        'Filter cryptocurrencies by name or symbol',
-      );
+      const searchInput = screen.getByLabelText('Search cryptocurrencies');
       expect(searchInput).toBeTruthy();
     });
 
@@ -348,7 +335,7 @@ describe('Home Component', () => {
 
       // Check that the first cryptocurrency item has proper accessibility properties
       const bitcoinItem = screen.getByLabelText(
-        'Bitcoin (BTC), Price: $45000.50, Market Cap: $850,000,000,000',
+        'Bitcoin (BTC), Price: $45000.50, 24h change: 1.20%',
       );
       expect(bitcoinItem).toBeTruthy();
     });
@@ -357,7 +344,7 @@ describe('Home Component', () => {
       renderHome();
 
       const bitcoinItem = screen.getByLabelText(
-        'Bitcoin (BTC), Price: $45000.50, Market Cap: $850,000,000,000',
+        'Bitcoin (BTC), Price: $45000.50, 24h change: 1.20%',
       );
       expect(bitcoinItem.props.accessibilityRole).toBe('button');
     });
@@ -376,9 +363,7 @@ describe('Home Component', () => {
     it('should have correct input properties', () => {
       renderHome();
 
-      const searchInput = screen.getByPlaceholderText(
-        'Filter by name or symbol',
-      );
+      const searchInput = screen.getByPlaceholderText('Search coins...');
 
       expect(searchInput.props.returnKeyType).toBe('search');
       expect(searchInput.props.autoCapitalize).toBe('none');
@@ -429,16 +414,16 @@ describe('Home Component', () => {
       renderHome();
 
       // The main container should be rendered
-      expect(screen.getByText('Bitcoin (BTC)')).toBeTruthy();
+      expect(screen.getByText('Bitcoin')).toBeTruthy();
     });
 
     it('should render FlatList with correct data', () => {
       renderHome();
 
       // Verify that all cryptocurrency items are rendered
-      expect(screen.getByText('Bitcoin (BTC)')).toBeTruthy();
-      expect(screen.getByText('Ethereum (ETH)')).toBeTruthy();
-      expect(screen.getByText('Cardano (ADA)')).toBeTruthy();
+      expect(screen.getByText('Bitcoin')).toBeTruthy();
+      expect(screen.getByText('Ethereum')).toBeTruthy();
+      expect(screen.getByText('Cardano')).toBeTruthy();
     });
   });
 });

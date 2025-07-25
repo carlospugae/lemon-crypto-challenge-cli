@@ -6,6 +6,7 @@ export type CryptoToken = {
     USD: {
       price: number;
       market_cap: number;
+      percent_change_24h: number;
     };
   };
 };
