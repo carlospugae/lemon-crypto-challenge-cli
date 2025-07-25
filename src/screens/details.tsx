@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  ScrollView,
-  RefreshControl,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native';
+import { View, ScrollView, RefreshControl, StyleSheet } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { theme } from '../theme';
 import {
@@ -14,6 +8,7 @@ import {
   MarketStats,
   SupplyInfo,
   Text,
+  DetailsSkeleton,
 } from '../components';
 import { useFavoritesStore } from '@/store/favorites';
 import { useFetchCryptoDetails } from '@/hooks/use-fetch-crypto-details';
@@ -48,15 +43,7 @@ const Details = () => {
   };
 
   if (loading && !refreshing) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator
-          size="large"
-          color={theme.colors.primary[500]}
-          accessibilityLabel="Loading crypto details"
-        />
-      </View>
-    );
+    return <DetailsSkeleton />;
   }
 
   if (error) {
