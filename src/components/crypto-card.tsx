@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { theme } from '@/theme';
 import { formatPrice, formatMarketCap, getCryptoIcon } from '@/utils/crypto';
-import Badge from './Badge';
 import { CryptoToken } from '@/types/types';
+import { Text } from '@/components';
 
 interface CryptoCardProps {
   crypto: CryptoToken;
@@ -61,14 +61,22 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
       <View style={styles.content}>
         <View style={styles.leftSection}>
           <View style={styles.iconContainer}>
-            <Text style={styles.iconText}>{getCryptoIcon(crypto.symbol)}</Text>
+            <Text variant="h5" color="white">
+              {getCryptoIcon(crypto.symbol)}
+            </Text>
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.nameRow}>
-              <Text style={styles.nameText}>{crypto.name}</Text>
-              <Text style={styles.symbolText}>{crypto.symbol}</Text>
+              <Text
+                variant="caption"
+                fontWeight="semibold"
+                color="gray.900"
+                style={styles.nameText}
+              >
+                {`${crypto.name} (${crypto.symbol})`}
+              </Text>
             </View>
-            <Text style={styles.marketCapText}>
+            <Text variant="caption" color="gray.500">
               Market Cap: {formatMarketCap(crypto.quote.USD.market_cap)}
             </Text>
           </View>
@@ -76,12 +84,18 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
 
         <View style={styles.rightSection}>
           <View style={styles.priceContainer}>
-            <Text style={styles.priceText}>
+            <Text variant="bodySmall" fontWeight="semibold" color="gray.900">
               {formatPrice(crypto.quote.USD.price)}
             </Text>
             <View style={styles.changeContainer}>
-              <Text style={styles.changeIcon}>{getChangeIcon()}</Text>
-              <Text style={[styles.changeText, { color: getChangeColor() }]}>
+              <Text variant="caption" style={styles.changeIcon}>
+                {getChangeIcon()}
+              </Text>
+              <Text
+                variant="caption"
+                fontWeight="medium"
+                color={getChangeColor()}
+              >
                 {crypto.quote.USD.percent_change_24h > 0 ? '+' : ''}
                 {crypto.quote.USD.percent_change_24h.toFixed(2)}%
               </Text>
@@ -99,9 +113,7 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                 : `Favorite ${crypto.name}`
             }
           >
-            <Text
-              style={[styles.favoriteIcon, isFavorite && styles.favoriteActive]}
-            >
+            <Text variant="h4" color={isFavorite ? 'warning.500' : 'gray.300'}>
               {isFavorite ? '★' : '☆'}
             </Text>
           </Pressable>
@@ -140,11 +152,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: theme.spacing.md,
   },
-  iconText: {
-    fontSize: theme.fontSize.lg,
-    fontWeight: theme.fontWeight.bold,
-    color: theme.colors.white,
-  },
   infoContainer: {
     flex: 1,
   },
@@ -154,9 +161,6 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.xs,
   },
   nameText: {
-    fontSize: theme.fontSize.base,
-    fontWeight: theme.fontWeight.semibold,
-    color: theme.colors.gray[900],
     marginRight: theme.spacing.sm,
   },
   badge: {
@@ -165,19 +169,12 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray[300],
   },
   symbolText: {
-    color: theme.colors.gray[600],
-    fontSize: theme.fontSize.xs,
-    fontWeight: theme.fontWeight.medium,
     backgroundColor: theme.colors.gray[100],
     paddingHorizontal: theme.spacing.sm,
     paddingVertical: theme.spacing.xs,
     borderRadius: theme.borderRadius.full,
     borderWidth: 1,
     borderColor: theme.colors.gray[200],
-  },
-  marketCapText: {
-    fontSize: theme.fontSize.sm,
-    color: theme.colors.gray[500],
   },
   rightSection: {
     flexDirection: 'row',
@@ -187,34 +184,17 @@ const styles = StyleSheet.create({
   priceContainer: {
     alignItems: 'flex-end',
   },
-  priceText: {
-    fontSize: theme.fontSize.base,
-    fontWeight: theme.fontWeight.semibold,
-    color: theme.colors.gray[900],
-  },
   changeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: theme.spacing.xs,
   },
   changeIcon: {
-    fontSize: theme.fontSize.xs,
     marginRight: theme.spacing.xs,
-  },
-  changeText: {
-    fontSize: theme.fontSize.xs,
-    fontWeight: theme.fontWeight.medium,
   },
   favoriteButton: {
     padding: theme.spacing.sm,
     borderRadius: theme.borderRadius.md,
-  },
-  favoriteIcon: {
-    fontSize: theme.fontSize.xl,
-    color: theme.colors.gray[300],
-  },
-  favoriteActive: {
-    color: theme.colors.warning[500],
   },
 });
 

@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { theme } from '@/theme';
+import { Text } from '@/components';
 
-interface BadgeProps {
-  children: React.ReactNode;
+export type BadgeProps = {
+  children?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'success' | 'error' | 'warning';
   style?: any;
   textStyle?: any;
-}
+};
 
 const Badge: React.FC<BadgeProps> = ({
   children,
@@ -80,7 +81,11 @@ const Badge: React.FC<BadgeProps> = ({
       accessibilityRole="text"
       accessibilityLabel={`Badge: ${children}`}
     >
-      <Text style={[styles.text, variantStyles.text, textStyle]}>
+      <Text
+        variant="caption"
+        fontWeight="medium"
+        style={[variantStyles.text, textStyle]}
+      >
         {children}
       </Text>
     </View>
@@ -94,11 +99,6 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.full,
     borderWidth: 1,
     alignSelf: 'flex-start',
-  },
-  text: {
-    fontSize: theme.fontSize.xs,
-    fontWeight: theme.fontWeight.medium,
-    lineHeight: theme.lineHeight.tight,
   },
 });
 

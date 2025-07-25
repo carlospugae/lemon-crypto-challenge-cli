@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   FlatList,
   ActivityIndicator,
   Switch,
@@ -13,7 +12,7 @@ import { useFavoritesStore } from '@/store/favorites';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '@/theme';
-import { CryptoCard, SearchInput } from '@/components';
+import { CryptoCard, SearchInput, Text } from '@/components';
 
 type RootStackParamList = {
   Home: undefined;
@@ -71,7 +70,9 @@ const Home = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={theme.colors.primary[500]} />
-        <Text style={styles.loadingText}>Loading top cryptocurrencies...</Text>
+        <Text variant="body" color="gray.600" style={styles.loadingText}>
+          Loading top cryptocurrencies...
+        </Text>
       </View>
     );
   }
@@ -79,7 +80,7 @@ const Home = () => {
   if (isError) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>
+        <Text variant="body" color="error.600" style={styles.errorText}>
           Error: {error?.message || 'Failed to load data.'}
         </Text>
       </View>
@@ -109,7 +110,9 @@ const Home = () => {
               accessibilityLabel="Show only favorites"
               accessibilityRole="switch"
             />
-            <Text style={styles.filterLabel}>Favorites</Text>
+            <Text variant="bodySmall" fontWeight="medium" color="gray.700">
+              Favorites
+            </Text>
           </View>
         </View>
       </View>
@@ -127,7 +130,9 @@ const Home = () => {
           )}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>No cryptocurrencies found.</Text>
+              <Text variant="body" color="gray.500" style={styles.emptyText}>
+                No cryptocurrencies found.
+              </Text>
             </View>
           }
           contentContainerStyle={styles.listContent}
@@ -150,8 +155,6 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: theme.spacing.md,
-    fontSize: theme.fontSize.base,
-    color: theme.colors.gray[600],
   },
   errorContainer: {
     flex: 1,
@@ -160,8 +163,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray[50],
   },
   errorText: {
-    fontSize: theme.fontSize.base,
-    color: theme.colors.error[600],
     textAlign: 'center',
     paddingHorizontal: theme.spacing.lg,
   },
@@ -182,11 +183,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: theme.spacing.sm,
   },
-  filterLabel: {
-    fontSize: theme.fontSize.sm,
-    fontWeight: theme.fontWeight.medium,
-    color: theme.colors.gray[700],
-  },
   listContainer: {
     flex: 1,
   },
@@ -201,8 +197,6 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing['3xl'],
   },
   emptyText: {
-    fontSize: theme.fontSize.base,
-    color: theme.colors.gray[500],
     textAlign: 'center',
   },
 });
