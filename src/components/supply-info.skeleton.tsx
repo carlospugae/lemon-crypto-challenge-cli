@@ -24,7 +24,7 @@ const SupplyInfoSkeleton: React.FC = () => {
           width={140}
           height={20}
           borderRadius={theme.borderRadius.sm}
-          marginBottom={theme.spacing['2xl']}
+          marginBottom={theme.spacing['3xl']}
         />
 
         {/* Supply Progress Section */}
@@ -66,52 +66,61 @@ const SupplyInfoSkeleton: React.FC = () => {
           </View>
         </View>
 
-        {/* Circulating Supply Row */}
-        <View style={styles.statsRow}>
-          <SkeletonPlaceholder.Item
-            width={120}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-            style={styles.labelText}
-          />
-          <SkeletonPlaceholder.Item
-            width={100}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-            style={styles.valueText}
-          />
-        </View>
+        {/* Stats Container */}
+        <View style={styles.statsContainer}>
+          {/* Circulating Supply Row */}
+          <View style={styles.statsRow}>
+            <SkeletonPlaceholder.Item
+              width={100}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+              style={styles.labelText}
+            />
+            <SkeletonPlaceholder.Item
+              width={100}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+              style={styles.valueText}
+            />
+          </View>
 
-        {/* Total Supply Row */}
-        <View style={[styles.statsRow, styles.statsRowBorder]}>
-          <SkeletonPlaceholder.Item
-            width={100}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-            style={styles.labelText}
-          />
-          <SkeletonPlaceholder.Item
-            width={100}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-            style={styles.valueText}
-          />
-        </View>
+          {/* Separator */}
+          <View style={styles.statsRowSeparator} />
 
-        {/* Max Supply Row */}
-        <View style={[styles.statsRow, styles.statsRowBorder]}>
-          <SkeletonPlaceholder.Item
-            width={90}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-            style={styles.labelText}
-          />
-          <SkeletonPlaceholder.Item
-            width={100}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-            style={styles.valueText}
-          />
+          {/* Total Supply Row */}
+          <View style={styles.statsRow}>
+            <SkeletonPlaceholder.Item
+              width={100}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+              style={styles.labelText}
+            />
+            <SkeletonPlaceholder.Item
+              width={100}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+              style={styles.valueText}
+            />
+          </View>
+
+          {/* Separator */}
+          <View style={styles.statsRowSeparator} />
+
+          {/* Max Supply Row */}
+          <View style={styles.statsRow}>
+            <SkeletonPlaceholder.Item
+              width={100}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+              style={styles.labelText}
+            />
+            <SkeletonPlaceholder.Item
+              width={100}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+              style={styles.valueText}
+            />
+          </View>
         </View>
       </SkeletonPlaceholder>
     </View>
@@ -121,10 +130,10 @@ const SupplyInfoSkeleton: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    gap: theme.spacing['3xl'],
   },
   supplyProgressSection: {
-    marginBottom: theme.spacing['2xl'],
-    marginTop: theme.spacing['2xl'],
+    marginBottom: theme.spacing['3xl'],
   },
   supplyProgressHeader: {
     flexDirection: 'row',
@@ -137,23 +146,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 2,
   },
+  statsContainer: {
+    gap: theme.spacing['2xl'],
+  },
   statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: theme.spacing.md,
   },
-  statsRowBorder: {
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.gray[100],
-  },
-  labelText: {
-    flex: 1,
-    marginRight: theme.spacing.sm,
-  },
-  valueText: {
-    flex: 1,
-    textAlign: 'right',
+  labelText: {},
+  valueText: {},
+  statsRowSeparator: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.gray[100],
   },
 });
 

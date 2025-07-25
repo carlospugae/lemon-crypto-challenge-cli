@@ -49,11 +49,10 @@ const SupplyInfo: React.FC<SupplyInfoProps> = ({
   const supplyPercentage = getSupplyPercentage(circulatingSupply, maxSupply);
 
   return (
-    <>
-      <Text variant="h5" color="gray.900" accessibilityRole="header">
+    <View style={styles.container}>
+      <Text variant="h4" color="gray.900" accessibilityRole="header">
         Supply Information
       </Text>
-      {/* Supply Progress */}
       <View style={styles.supplyProgressSection}>
         <View style={styles.supplyProgressHeader}>
           <Text variant="caption" color="gray.600">
@@ -77,54 +76,58 @@ const SupplyInfo: React.FC<SupplyInfoProps> = ({
           </Text>
         </View>
       </View>
-      <View style={styles.statsRow}>
-        <Text variant="caption" color="gray.600" style={styles.labelText}>
-          Circulating Supply
-        </Text>
-        <Text
-          variant="caption"
-          color="gray.900"
-          fontWeight="semibold"
-          style={styles.valueText}
-        >
-          {formatSupply(circulatingSupply)} {symbol}
-        </Text>
+      <View style={styles.statsContainer}>
+        <View style={styles.statsRow}>
+          <Text variant="caption" color="gray.600" style={styles.labelText}>
+            Circulating Supply
+          </Text>
+          <Text
+            variant="caption"
+            color="gray.900"
+            fontWeight="semibold"
+            style={styles.valueText}
+          >
+            {formatSupply(circulatingSupply)} {symbol}
+          </Text>
+        </View>
+        <View style={styles.statsRowSeparator} />
+        <View style={[styles.statsRow]}>
+          <Text variant="caption" color="gray.600" style={styles.labelText}>
+            Total Supply
+          </Text>
+          <Text
+            variant="caption"
+            color="gray.900"
+            fontWeight="semibold"
+            style={styles.valueText}
+          >
+            {formatSupply(totalSupply)} {symbol}
+          </Text>
+        </View>
+        <View style={styles.statsRowSeparator} />
+        <View style={[styles.statsRow]}>
+          <Text variant="caption" color="gray.600" style={styles.labelText}>
+            Max Supply
+          </Text>
+          <Text
+            variant="caption"
+            color="gray.900"
+            fontWeight="semibold"
+            style={styles.valueText}
+          >
+            {formatSupply(maxSupply)} {symbol}
+          </Text>
+        </View>
       </View>
-      <View style={[styles.statsRow, styles.statsRowBorder]}>
-        <Text variant="caption" color="gray.600" style={styles.labelText}>
-          Total Supply
-        </Text>
-        <Text
-          variant="caption"
-          color="gray.900"
-          fontWeight="semibold"
-          style={styles.valueText}
-        >
-          {formatSupply(totalSupply)} {symbol}
-        </Text>
-      </View>
-      <View style={[styles.statsRow, styles.statsRowBorder]}>
-        <Text variant="caption" color="gray.600" style={styles.labelText}>
-          Max Supply
-        </Text>
-        <Text
-          variant="caption"
-          color="gray.900"
-          fontWeight="semibold"
-          style={styles.valueText}
-        >
-          {formatSupply(maxSupply)} {symbol}
-        </Text>
-      </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  supplyProgressSection: {
-    marginBottom: theme.spacing['2xl'],
-    marginTop: theme.spacing['2xl'],
+  container: {
+    gap: theme.spacing['3xl'],
   },
+  supplyProgressSection: {},
   supplyProgressHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -144,19 +147,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: theme.spacing.md,
-  },
-  statsRowBorder: {
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.gray[100],
   },
   labelText: {
     flex: 1,
-    marginRight: theme.spacing.sm,
   },
   valueText: {
     flex: 1,
     textAlign: 'right',
+  },
+  statsRowSeparator: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.gray[100],
+  },
+  statsContainer: {
+    gap: theme.spacing['2xl'],
   },
 });
 

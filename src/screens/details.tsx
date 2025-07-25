@@ -42,7 +42,7 @@ const Details = () => {
     toggleFavorite(id);
   };
 
-  if (loading && !refreshing) {
+  if (loading) {
     return <DetailsSkeleton />;
   }
 

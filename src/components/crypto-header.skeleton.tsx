@@ -1,11 +1,16 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { theme } from '@/theme';
+import { theme } from '../theme';
 
 /**
- * Skeleton component for the crypto header section
- * Mimics the structure of CryptoHeader component with loading placeholders
+ * Skeleton component for the crypto header
+ * Displays loading placeholders for the crypto header elements including:
+ * - Rank badge
+ * - Favorite button
+ * - Crypto icon
+ * - Crypto name
+ * - Symbol badge
  *
  * @example
  * ```tsx
@@ -44,11 +49,11 @@ const CryptoHeaderSkeleton: React.FC = () => {
             borderRadius={theme.borderRadius.full}
           />
 
-          {/* Title Row */}
+          {/* Title Row - Name and Symbol Badge */}
           <View style={styles.titleRow}>
             {/* Crypto Name */}
             <SkeletonPlaceholder.Item
-              width={150}
+              width={160}
               height={24}
               borderRadius={theme.borderRadius.sm}
               marginBottom={theme.spacing.sm}
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTextContainer: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
     gap: theme.spacing.md,
   },
@@ -85,7 +90,7 @@ const styles = StyleSheet.create({
   },
   titleRow: {
     alignItems: 'center',
-    gap: theme.spacing.sm,
+    // gap: theme.spacing.sm,
   },
 });
 

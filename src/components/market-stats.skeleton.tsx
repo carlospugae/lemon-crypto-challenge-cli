@@ -19,40 +19,45 @@ const MarketStatsSkeleton: React.FC = () => {
         backgroundColor={theme.colors.gray[200]}
         highlightColor={theme.colors.gray[100]}
       >
-        {/* Section Title */}
-        <SkeletonPlaceholder.Item
-          width={140}
-          height={20}
-          borderRadius={theme.borderRadius.sm}
-          marginBottom={theme.spacing['2xl']}
-        />
+        <View style={styles.content}>
+          {/* Header */}
+          <SkeletonPlaceholder.Item
+            width={140}
+            height={20}
+            borderRadius={theme.borderRadius.sm}
+            marginBottom={theme.spacing['2xl']}
+          />
 
-        {/* Market Cap Row */}
-        <View style={styles.statsRow}>
-          <SkeletonPlaceholder.Item
-            width={80}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-          />
-          <SkeletonPlaceholder.Item
-            width={100}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-          />
-        </View>
+          {/* Market Cap Row */}
+          <View style={styles.statsRow}>
+            <SkeletonPlaceholder.Item
+              width={80}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+            />
+            <SkeletonPlaceholder.Item
+              width={100}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+            />
+          </View>
 
-        {/* 24h Volume Row */}
-        <View style={[styles.statsRow, styles.statsRowBorder]}>
-          <SkeletonPlaceholder.Item
-            width={80}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-          />
-          <SkeletonPlaceholder.Item
-            width={100}
-            height={14}
-            borderRadius={theme.borderRadius.sm}
-          />
+          {/* Separator */}
+          <View style={styles.statsRowSeparator} />
+
+          {/* 24h Volume Row */}
+          <View style={styles.statsRow}>
+            <SkeletonPlaceholder.Item
+              width={80}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+            />
+            <SkeletonPlaceholder.Item
+              width={100}
+              height={14}
+              borderRadius={theme.borderRadius.sm}
+            />
+          </View>
         </View>
       </SkeletonPlaceholder>
     </View>
@@ -63,15 +68,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  content: {
+    gap: theme.spacing['2xl'],
+  },
   statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: theme.spacing.md,
   },
-  statsRowBorder: {
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.gray[100],
+  statsRowSeparator: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.gray[100],
   },
 });
 

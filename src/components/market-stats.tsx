@@ -11,8 +11,8 @@ interface MarketStatsProps {
 
 const MarketStats: React.FC<MarketStatsProps> = ({ marketCap, volume24h }) => {
   return (
-    <>
-      <Text variant="h5" color="gray.900" accessibilityRole="header">
+    <View style={styles.container}>
+      <Text variant="h4" color="gray.900" accessibilityRole="header">
         Market Statistics
       </Text>
       <View style={styles.statsRow}>
@@ -23,7 +23,8 @@ const MarketStats: React.FC<MarketStatsProps> = ({ marketCap, volume24h }) => {
           {formatMarketCap(marketCap)}
         </Text>
       </View>
-      <View style={[styles.statsRow, styles.statsRowBorder]}>
+      <View style={styles.statsRowSeparator} />
+      <View style={[styles.statsRow]}>
         <Text variant="caption" color="gray.600">
           24h Volume
         </Text>
@@ -31,20 +32,25 @@ const MarketStats: React.FC<MarketStatsProps> = ({ marketCap, volume24h }) => {
           {formatMarketCap(volume24h)}
         </Text>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    gap: theme.spacing['2xl'],
+  },
   statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: theme.spacing.md,
+    // paddingVertical: theme.spacing.sm,
+    // borderWidth: 1,
+    // borderColor: 'red',
   },
-  statsRowBorder: {
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.gray[100],
+  statsRowSeparator: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.gray[100],
   },
 });
 

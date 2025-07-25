@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { theme } from '@/theme';
 import CryptoHeaderSkeleton from './crypto-header.skeleton';
 import PriceDisplaySkeleton from './price-display.skeleton';
@@ -17,15 +16,10 @@ import SupplyInfoSkeleton from './supply-info.skeleton';
  * ```
  */
 const DetailsSkeleton: React.FC = () => {
-  const insets = useSafeAreaInsets();
-
   return (
     <ScrollView
       style={{ backgroundColor: theme.colors.gray[50] }}
-      contentContainerStyle={[
-        styles.scrollContainer,
-        { paddingTop: insets.top + theme.spacing['2xl'] },
-      ]}
+      contentContainerStyle={styles.scrollContainer}
       testID="details-skeleton-scroll"
     >
       {/* Header and Price Card */}
@@ -50,7 +44,7 @@ const DetailsSkeleton: React.FC = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     padding: theme.spacing['2xl'],
-    flexGrow: 1,
+    // flexGrow: 1,
     gap: theme.spacing['2xl'],
   },
   card: {
