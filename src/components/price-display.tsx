@@ -18,7 +18,7 @@ const PriceDisplay: React.FC<PriceDisplayProps> = ({
 
   return (
     <View style={styles.priceSection}>
-      <Text variant="h1" color="gray.900" accessibilityRole="text">
+      <Text variant="h2" color="gray.900" accessibilityRole="text">
         {formatPrice(price)}
       </Text>
       <View style={styles.priceChangeRow}>
@@ -36,9 +36,10 @@ const PriceDisplay: React.FC<PriceDisplayProps> = ({
           />
         )}
         <Text
-          variant="h5"
+          variant="body"
           color={isPositive ? 'success.600' : 'error.600'}
           accessibilityRole="text"
+          fontWeight="bold"
         >
           {isPositive ? '+' : ''}
           {percentChange24h.toFixed(2)}%
@@ -54,7 +55,6 @@ const PriceDisplay: React.FC<PriceDisplayProps> = ({
 const styles = StyleSheet.create({
   priceSection: {
     alignItems: 'center',
-    paddingVertical: theme.spacing.lg,
   },
   priceChangeRow: {
     flexDirection: 'row',

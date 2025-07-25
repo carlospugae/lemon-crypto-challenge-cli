@@ -17,7 +17,6 @@ import {
 } from '../components';
 import { useFavoritesStore } from '@/store/favorites';
 import { useFetchCryptoDetails } from '@/hooks/use-fetch-crypto-details';
-import { CryptoDetails } from '@/types/types';
 
 interface DetailsScreenParams {
   id: string;
@@ -42,6 +41,10 @@ const Details = () => {
 
   const handleRefresh = () => {
     refetch();
+  };
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(id);
   };
 
   if (loading && !refreshing) {
@@ -75,10 +78,6 @@ const Details = () => {
       </View>
     );
   }
-
-  const handleToggleFavorite = () => {
-    toggleFavorite(id);
-  };
 
   return (
     <ScrollView
@@ -131,6 +130,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     padding: theme.spacing['2xl'],
     flexGrow: 1,
+    gap: theme.spacing['2xl'],
   },
   centered: {
     flex: 1,
@@ -142,9 +142,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: theme.borderRadius['3xl'],
     padding: theme.spacing['3xl'],
-    marginBottom: theme.spacing['2xl'],
     borderWidth: 1,
     borderColor: theme.colors.gray[100],
+    gap: theme.spacing['2xl'],
     ...theme.shadows.md,
   },
 });

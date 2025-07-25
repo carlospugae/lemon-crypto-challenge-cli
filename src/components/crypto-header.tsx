@@ -25,114 +25,96 @@ const CryptoHeader: React.FC<CryptoHeaderProps> = ({
   };
 
   return (
-    <View style={styles.headerRow}>
-      <View style={styles.headerLeft}>
-        <View style={styles.iconCircle}>
-          <CryptoIcon symbol={crypto.symbol} size={32} color="white" />
+    <View>
+      <View style={styles.headerTextContainer}>
+        <View style={styles.headerActions}>
+          <Badge
+            variant="primary"
+            style={styles.rankBadge}
+            textStyle={styles.rankBadgeText}
+          >
+            Rank #{crypto.cmc_rank}
+          </Badge>
+          <TouchableOpacity
+            onPress={handleToggleFavorite}
+            accessibilityRole="button"
+            accessibilityLabel={
+              isFavorite
+                ? `Unfavorite ${crypto.name}`
+                : `Favorite ${crypto.name}`
+            }
+            style={styles.actionButton}
+          >
+            <FontAwesome5
+              name="star"
+              size={20}
+              color={
+                isFavorite ? theme.colors.warning[400] : theme.colors.gray[400]
+              }
+              solid={isFavorite}
+              accessibilityLabel={isFavorite ? 'Favorited' : 'Not favorited'}
+            />
+          </TouchableOpacity>
         </View>
-        <View style={styles.headerTextContainer}>
-          <View style={styles.titleRow}>
-            <Text
-              variant="h3"
-              color="gray.900"
-              numberOfLines={1}
-              accessibilityRole="header"
+        <View style={styles.iconCircle}>
+          <CryptoIcon symbol={crypto.symbol} size={64} color="white" />
+        </View>
+        <View style={styles.titleRow}>
+          <Text
+            variant="h3"
+            color="gray.900"
+            numberOfLines={1}
+            accessibilityRole="header"
+            fontWeight="bold"
+          >
+            {crypto.name}
+          </Text>
+          <View style={styles.badgeContainer}>
+            <Badge
+              variant="secondary"
+              style={styles.symbolBadge}
+              textStyle={styles.symbolBadgeText}
             >
-              {crypto.name}
-            </Text>
-            <View style={styles.badgeContainer}>
-              <Badge
-                variant="secondary"
-                style={styles.symbolBadge}
-                textStyle={styles.symbolBadgeText}
-              >
-                {crypto.symbol}
-              </Badge>
-              <Badge
-                variant="primary"
-                style={styles.rankBadge}
-                textStyle={styles.rankBadgeText}
-              >
-                Rank #{crypto.cmc_rank}
-              </Badge>
-            </View>
+              {crypto.symbol}
+            </Badge>
           </View>
         </View>
-      </View>
-      <View style={styles.headerActions}>
-        <TouchableOpacity
-          onPress={handleToggleFavorite}
-          accessibilityRole="button"
-          accessibilityLabel={
-            isFavorite ? `Unfavorite ${crypto.name}` : `Favorite ${crypto.name}`
-          }
-          style={styles.actionButton}
-        >
-          <FontAwesome5
-            name="star"
-            size={20}
-            color={
-              isFavorite ? theme.colors.warning[400] : theme.colors.gray[400]
-            }
-            solid={isFavorite}
-            accessibilityLabel={isFavorite ? 'Favorited' : 'Not favorited'}
-          />
-        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing.xl,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    flex: 1,
-    marginRight: theme.spacing.lg,
-  },
   iconCircle: {
-    width: 72,
-    height: 72,
+    width: 92,
+    height: 92,
     borderRadius: theme.borderRadius.full,
     backgroundColor: theme.colors.warning[400],
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: theme.spacing.lg,
-    flexShrink: 0,
   },
   headerTextContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
-    minWidth: 0,
+    alignItems: 'center',
+    gap: theme.spacing.md,
   },
   titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'nowrap',
     gap: theme.spacing.sm,
   },
 
   badgeContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.spacing.sm,
-    flexShrink: 0,
+    justifyContent: 'center',
   },
   symbolBadge: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
     backgroundColor: theme.colors.gray[200],
     borderColor: theme.colors.gray[300],
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.xs,
     borderRadius: theme.borderRadius.full,
-    minHeight: 28,
-    justifyContent: 'center',
-    flexShrink: 0,
   },
   symbolBadgeText: {
     fontSize: theme.fontSize.sm,
@@ -148,7 +130,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.full,
     minHeight: 28,
     justifyContent: 'center',
-    flexShrink: 0,
+    alignSelf: 'center',
   },
   rankBadgeText: {
     fontSize: theme.fontSize.sm,
@@ -157,10 +139,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   headerActions: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: theme.spacing.sm,
-    flexShrink: 0,
   },
   actionButton: {
     padding: theme.spacing.sm,

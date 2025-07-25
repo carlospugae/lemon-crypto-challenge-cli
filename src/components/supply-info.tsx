@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
   valueText: {
     flex: 1,
     textAlign: 'right',
-    flexShrink: 1,
   },
 });
 

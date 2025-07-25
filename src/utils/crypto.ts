@@ -22,12 +22,6 @@ export const formatMarketCap = (marketCap: number): string => {
   }
 };
 
-/**
- * Gets the vector icon name for a cryptocurrency symbol
- * @param symbol - The cryptocurrency symbol (e.g., 'BTC', 'ETH')
- * @returns The icon name for react-native-vector-icons
- * @example getCryptoIconName('BTC') // 'bitcoin'
- */
 export const getCryptoIconName = (symbol: string): string => {
   const iconMap: Record<string, string> = {
     // Major cryptocurrencies with specific icons
@@ -165,12 +159,6 @@ export const getCryptoIconName = (symbol: string): string => {
   return iconMap[symbol.toUpperCase()] || 'circle';
 };
 
-/**
- * Gets the appropriate icon family for a cryptocurrency symbol
- * @param symbol - The cryptocurrency symbol (e.g., 'BTC', 'ETH')
- * @returns The icon family name for react-native-vector-icons
- * @example getCryptoIconFamily('BTC') // 'FontAwesome5'
- */
 export const getCryptoIconFamily = (symbol: string): string => {
   const familyMap: Record<string, string> = {
     // FontAwesome5 has better crypto-specific icons
