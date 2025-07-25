@@ -11,10 +11,23 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { debounce } from 'lodash';
 import { useFetchCryptos } from '@/hooks/use-fetch-cryptos';
 import { useFavoritesStore } from '@/store/favorites';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+
+type RootStackParamList = {
+  Home: undefined;
+  Details: { id: string };
+  Login: undefined;
+};
+
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
 
 const Home = () => {
   const { data, isLoading, isError, error } = useFetchCryptos();
-
+  console.log(useFavoritesStore.toString());
   const [filter, setFilter] = useState('');
   const [debouncedFilter, setDebouncedFilter] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
@@ -50,6 +63,11 @@ const Home = () => {
 
     return matchesFilter && matchesFavorite;
   });
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const handleGoToDetails = (id: string) => {
+    navigation.navigate('Details', { id });
+  };
 
   if (isLoading) {
     return (
@@ -122,7 +140,7 @@ const Home = () => {
               2,
             )}, Market Cap: $${item.quote.USD.market_cap.toLocaleString()}`}
             tabIndex={0}
-            onPress={() => {}}
+            onPress={() => handleGoToDetails(item.id)}
           >
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
