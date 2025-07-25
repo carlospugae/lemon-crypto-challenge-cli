@@ -4,12 +4,44 @@ import {
   FlatList,
   ActivityIndicator,
   Pressable,
+  TextInput,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { debounce } from 'lodash';
 import { useFetchCryptos } from '@/hooks/use-fetch-cryptos';
 
 const Home = () => {
   const { data, isLoading, isError, error } = useFetchCryptos();
+
+  const [filter, setFilter] = useState('');
+  const [debouncedFilter, setDebouncedFilter] = useState('');
+
+  const debouncedSetFilter = useMemo(
+    () =>
+      debounce((value: string) => {
+        setDebouncedFilter(value);
+      }, 300),
+    [],
+  );
+
+  useEffect(() => {
+    debouncedSetFilter(filter);
+
+    return () => {
+      debouncedSetFilter.cancel();
+    };
+  }, [filter, debouncedSetFilter]);
+
+  const filteredData = data?.filter(item => {
+    const search = debouncedFilter.trim().toLowerCase();
+
+    if (!search) return true;
+
+    return (
+      item.name.toLowerCase().includes(search) ||
+      item.symbol.toLowerCase().includes(search)
+    );
+  });
 
   if (isLoading) {
     return (
@@ -30,8 +62,26 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
+      <TextInput
+        value={filter}
+        onChangeText={setFilter}
+        placeholder="Filter by name or symbol"
+        style={{
+          borderWidth: 1,
+          borderColor: '#ccc',
+          borderRadius: 8,
+          padding: 10,
+          marginBottom: 16,
+        }}
+        accessible={true}
+        accessibilityLabel="Filter cryptocurrencies by name or symbol"
+        returnKeyType="search"
+        autoCapitalize="none"
+        autoCorrect={false}
+        clearButtonMode="while-editing"
+      />
       <FlatList
-        data={data}
+        data={filteredData}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <Pressable
