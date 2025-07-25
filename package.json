@@ -36,6 +36,8 @@
     "@react-native/eslint-config": "0.80.1",
     "@react-native/metro-config": "0.80.1",
     "@react-native/typescript-config": "0.80.1",
+    "@tanstack/react-query-devtools": "^5.83.0",
+    "@tanstack/eslint-plugin-query": "^5.81.2",
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^29.5.13",
     "@types/react": "^19.1.0",
