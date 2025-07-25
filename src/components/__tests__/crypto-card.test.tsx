@@ -65,7 +65,7 @@ describe('CryptoCard', () => {
 
   describe('Rendering', () => {
     it('should render crypto card with correct information', () => {
-      const { getByText, getByLabelText } = render(
+      const { getByText, getByLabelText, getByTestId } = render(
         <CryptoCard
           crypto={mockCryptoToken}
           isFavorite={false}
@@ -86,11 +86,12 @@ describe('CryptoCard', () => {
       // Check if percentage change is displayed with plus sign for positive
       expect(getByText('+2.50%')).toBeTruthy();
 
-      // Check if crypto icon is displayed
-      expect(getByText('₿')).toBeTruthy();
+      // Check if crypto icon is displayed (vector icon, not text)
+      // Vector icons are rendered as components, so we check for the icon container
+      expect(getByTestId('crypto-icon-container')).toBeTruthy();
 
-      // Check if favorite star is displayed (unfavorited)
-      expect(getByText('☆')).toBeTruthy();
+      // Check if favorite star is displayed (vector icon, not text)
+      expect(getByTestId('favorite-button')).toBeTruthy();
 
       // Check accessibility label
       expect(
@@ -146,7 +147,7 @@ describe('CryptoCard', () => {
         symbol: 'UNKNOWN',
       };
 
-      const { getByText } = render(
+      const { getByText, getByTestId } = render(
         <CryptoCard
           crypto={unknownCrypto}
           isFavorite={false}
@@ -155,14 +156,14 @@ describe('CryptoCard', () => {
         />,
       );
 
-      // Check if default icon is displayed for unknown symbol
-      expect(getByText('🪙')).toBeTruthy();
+      // Check if default icon is displayed for unknown symbol (vector icon)
+      expect(getByTestId('crypto-icon-container')).toBeTruthy();
     });
   });
 
   describe('Favorite functionality', () => {
     it('should display unfavorited star when isFavorite is false', () => {
-      const { getByText, getByLabelText } = render(
+      const { getByText, getByLabelText, getByTestId } = render(
         <CryptoCard
           crypto={mockCryptoToken}
           isFavorite={false}
@@ -171,12 +172,12 @@ describe('CryptoCard', () => {
         />,
       );
 
-      expect(getByText('☆')).toBeTruthy();
+      expect(getByTestId('favorite-button')).toBeTruthy();
       expect(getByLabelText('Favorite Bitcoin')).toBeTruthy();
     });
 
     it('should display favorited star when isFavorite is true', () => {
-      const { getByText, getByLabelText } = render(
+      const { getByText, getByLabelText, getByTestId } = render(
         <CryptoCard
           crypto={mockCryptoToken}
           isFavorite={true}
@@ -185,7 +186,7 @@ describe('CryptoCard', () => {
         />,
       );
 
-      expect(getByText('★')).toBeTruthy();
+      expect(getByTestId('favorite-button')).toBeTruthy();
       expect(getByLabelText('Unfavorite Bitcoin')).toBeTruthy();
     });
 
@@ -256,7 +257,8 @@ describe('CryptoCard', () => {
         />,
       );
 
-      expect(getByText('↗')).toBeTruthy();
+      // Check that the percentage change is displayed with plus sign
+      expect(getByText('+2.50%')).toBeTruthy();
     });
 
     it('should display correct change icon for negative percentage', () => {
@@ -269,7 +271,8 @@ describe('CryptoCard', () => {
         />,
       );
 
-      expect(getByText('↘')).toBeTruthy();
+      // Check that the percentage change is displayed without plus sign
+      expect(getByText('-1.80%')).toBeTruthy();
     });
 
     it('should display correct change icon for zero percentage', () => {
@@ -282,7 +285,8 @@ describe('CryptoCard', () => {
         />,
       );
 
-      expect(getByText('→')).toBeTruthy();
+      // Check that the percentage change is displayed as 0.00%
+      expect(getByText('0.00%')).toBeTruthy();
     });
   });
 

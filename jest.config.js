@@ -4,7 +4,7 @@ module.exports = {
     '^@env$': '<rootDir>/__mocks__/@env.js',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-size-matters)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-size-matters|react-native-vector-icons)/)',
   ],
   testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/'],
   transform: {

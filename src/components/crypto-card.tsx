@@ -1,7 +1,14 @@
 import React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { theme } from '@/theme';
-import { formatPrice, formatMarketCap, getCryptoIcon } from '@/utils/crypto';
+import {
+  formatPrice,
+  formatMarketCap,
+  getCryptoIconName,
+  getCryptoIconFamily,
+} from '@/utils/crypto';
 import { CryptoToken } from '@/types/types';
 import { Text } from '@/components';
 
@@ -12,6 +19,23 @@ interface CryptoCardProps {
   onToggleFavorite: (id: string) => void;
   style?: any;
 }
+
+const CryptoIcon: React.FC<{ symbol: string; size: number; color: string }> = ({
+  symbol,
+  size,
+  color,
+}) => {
+  const iconName = getCryptoIconName(symbol);
+  const iconFamily = getCryptoIconFamily(symbol);
+
+  switch (iconFamily) {
+    case 'FontAwesome5':
+      return <FontAwesome5 name={iconName} size={size} color={color} />;
+    case 'Feather':
+    default:
+      return <Feather name={iconName} size={size} color={color} />;
+  }
+};
 
 const CryptoCard: React.FC<CryptoCardProps> = ({
   crypto,
@@ -39,11 +63,11 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
 
   const getChangeIcon = () => {
     if (crypto.quote.USD.percent_change_24h > 0) {
-      return '↗';
+      return 'trending-up';
     } else if (crypto.quote.USD.percent_change_24h < 0) {
-      return '↘';
+      return 'trending-down';
     }
-    return '→';
+    return 'minus';
   };
 
   return (
@@ -60,10 +84,8 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
     >
       <View style={styles.content}>
         <View style={styles.leftSection}>
-          <View style={styles.iconContainer}>
-            <Text variant="h5" color="white">
-              {getCryptoIcon(crypto.symbol)}
-            </Text>
+          <View style={styles.iconContainer} testID="crypto-icon-container">
+            <CryptoIcon symbol={crypto.symbol} size={24} color="white" />
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.nameRow}>
@@ -88,9 +110,12 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
               {formatPrice(crypto.quote.USD.price)}
             </Text>
             <View style={styles.changeContainer}>
-              <Text variant="caption" style={styles.changeIcon}>
-                {getChangeIcon()}
-              </Text>
+              <Feather
+                name={getChangeIcon()}
+                size={12}
+                color={getChangeColor()}
+                style={styles.changeIcon}
+              />
               <Text
                 variant="caption"
                 fontWeight="medium"
@@ -107,15 +132,21 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
             onPress={handleFavoritePress}
             accessible={true}
             accessibilityRole="button"
+            testID="favorite-button"
             accessibilityLabel={
               isFavorite
                 ? `Unfavorite ${crypto.name}`
                 : `Favorite ${crypto.name}`
             }
           >
-            <Text variant="h4" color={isFavorite ? 'warning.500' : 'gray.300'}>
-              {isFavorite ? '★' : '☆'}
-            </Text>
+            <FontAwesome5
+              name="star"
+              size={20}
+              color={
+                isFavorite ? theme.colors.warning[500] : theme.colors.gray[300]
+              }
+              solid={isFavorite}
+            />
           </Pressable>
         </View>
       </View>

@@ -1,4 +1,10 @@
 export { default as Badge } from './badge';
 export { default as CryptoCard } from './crypto-card';
+export { default as CryptoHeader } from './crypto-header';
+export { default as CryptoIcon } from './crypto-icon';
+export { default as MarketStats } from './market-stats';
+export { default as PriceDisplay } from './price-display';
+export { default as Progress } from './progress';
 export { default as SearchInput } from './search-input';
+export { default as SupplyInfo } from './supply-info';
 export { default as Text } from './text';

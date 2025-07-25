@@ -1,14 +1,23 @@
+import React from 'react';
 import {
   View,
-  Text,
   ScrollView,
   RefreshControl,
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import React from 'react';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import { theme } from '../theme';
+import {
+  CryptoHeader,
+  PriceDisplay,
+  MarketStats,
+  SupplyInfo,
+  Text,
+} from '../components';
+import { useFavoritesStore } from '@/store/favorites';
 import { useFetchCryptoDetails } from '@/hooks/use-fetch-crypto-details';
+import { CryptoDetails } from '@/types/types';
 
 interface DetailsScreenParams {
   id: string;
@@ -20,100 +29,123 @@ const Details = () => {
   const route = useRoute<DetailsRouteProp>();
   const { id } = route.params;
 
+  const isFavorite = useFavoritesStore(state => state.isFavorite(id));
+  const toggleFavorite = useFavoritesStore(state => state.toggleFavorite);
+
   const {
     data: crypto,
-    isLoading,
-    isFetching,
-    error,
+    isLoading: loading,
+    isRefetching: refreshing,
     refetch,
+    error,
   } = useFetchCryptoDetails(id);
 
   const handleRefresh = () => {
     refetch();
   };
 
-  if (isLoading) {
+  if (loading && !refreshing) {
     return (
       <View style={styles.centered}>
         <ActivityIndicator
           size="large"
+          color={theme.colors.primary[500]}
           accessibilityLabel="Loading crypto details"
         />
       </View>
     );
   }
 
-  if (error || !crypto) {
+  if (error) {
     return (
       <View style={styles.centered}>
-        <Text accessibilityRole="text">No data available.</Text>
+        <Text variant="body" color="error.600" accessibilityRole="text">
+          Error loading crypto details. Please try again.
+        </Text>
       </View>
     );
   }
 
+  if (!crypto) {
+    return (
+      <View style={styles.centered}>
+        <Text variant="body" accessibilityRole="text">
+          No data available.
+        </Text>
+      </View>
+    );
+  }
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(id);
+  };
+
   return (
     <ScrollView
-      contentContainerStyle={styles.container}
+      style={{ backgroundColor: theme.colors.gray[50] }}
+      contentContainerStyle={styles.scrollContainer}
       refreshControl={
         <RefreshControl
-          refreshing={isFetching}
+          refreshing={refreshing}
           onRefresh={handleRefresh}
           accessibilityLabel="Pull to refresh crypto details"
         />
       }
     >
-      <Text style={styles.title} accessibilityRole="header">
-        {crypto.name} ({crypto.symbol})
-      </Text>
-      <Text style={styles.detail} accessibilityRole="text">
-        Rank: {crypto.cmc_rank}
-      </Text>
-      <Text style={styles.detail} accessibilityRole="text">
-        Price: ${crypto.quote.USD.price.toFixed(2)}
-      </Text>
-      <Text style={styles.detail} accessibilityRole="text">
-        Market Cap: ${crypto.quote.USD.market_cap.toLocaleString()}
-      </Text>
-      <Text style={styles.detail} accessibilityRole="text">
-        Volume (24Hr): ${crypto.quote.USD.volume_24h.toLocaleString()}
-      </Text>
-      <Text style={styles.detail} accessibilityRole="text">
-        Change (24Hr): {crypto.quote.USD.percent_change_24h.toFixed(2)}%
-      </Text>
-      <Text style={styles.detail} accessibilityRole="text">
-        Circulating Supply: {crypto.circulating_supply.toLocaleString()}
-      </Text>
-      <Text style={styles.detail} accessibilityRole="text">
-        Total Supply: {crypto.total_supply.toLocaleString()}
-      </Text>
-      <Text style={styles.detail} accessibilityRole="text">
-        Max Supply:{' '}
-        {crypto.max_supply ? crypto.max_supply.toLocaleString() : 'N/A'}
-      </Text>
+      <View style={styles.card}>
+        <CryptoHeader
+          crypto={{
+            name: crypto.name,
+            symbol: crypto.symbol,
+            cmc_rank: crypto.cmc_rank,
+          }}
+          isFavorite={isFavorite}
+          onToggleFavorite={handleToggleFavorite}
+        />
+        <PriceDisplay
+          price={crypto.quote.USD.price}
+          percentChange24h={crypto.quote.USD.percent_change_24h}
+        />
+      </View>
+
+      <View style={styles.card}>
+        <MarketStats
+          marketCap={crypto.quote.USD.market_cap}
+          volume24h={crypto.quote.USD.volume_24h}
+        />
+      </View>
+
+      <View style={styles.card}>
+        <SupplyInfo
+          circulatingSupply={crypto.circulating_supply}
+          totalSupply={crypto.total_supply}
+          maxSupply={crypto.max_supply}
+          symbol={crypto.symbol}
+        />
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 24,
-    backgroundColor: '#fff',
+  scrollContainer: {
+    padding: theme.spacing['2xl'],
     flexGrow: 1,
   },
   centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.gray[50],
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  detail: {
-    fontSize: 18,
-    marginBottom: 8,
+  card: {
+    backgroundColor: theme.colors.white,
+    borderRadius: theme.borderRadius['3xl'],
+    padding: theme.spacing['3xl'],
+    marginBottom: theme.spacing['2xl'],
+    borderWidth: 1,
+    borderColor: theme.colors.gray[100],
+    ...theme.shadows.md,
   },
 });
 
