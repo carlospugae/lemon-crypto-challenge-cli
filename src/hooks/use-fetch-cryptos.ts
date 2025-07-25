@@ -1,11 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { CMC_API_KEY } from '@env';
 import { CryptoToken } from '@/types/types';
 
-const COINMARKETCAP_URL =
-  'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=100&convert=USD';
+export const CMC_DOMAIN = 'https://pro-api.coinmarketcap.com';
+export const CMC_ENDPOINT = '/v1/cryptocurrency/listings/latest';
+export const CMC_QUERY_PARAMS = '?limit=100&convert=USD';
 
-const fetchCryptos = async (): Promise<CryptoToken[]> => {
+export const COINMARKETCAP_URL = `${CMC_DOMAIN}${CMC_ENDPOINT}${CMC_QUERY_PARAMS}`;
+
+export const fetchCryptos = async (): Promise<CryptoToken[]> => {
+  // Import CMC_API_KEY here so jest mock is used in tests
+  const { CMC_API_KEY } = require('@env');
   const response = await fetch(COINMARKETCAP_URL, {
     headers: {
       'X-CMC_PRO_API_KEY': CMC_API_KEY,
