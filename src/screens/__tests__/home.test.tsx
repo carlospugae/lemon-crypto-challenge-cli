@@ -11,8 +11,30 @@ import Home from '../home';
 import { useFetchCryptos } from '@/hooks/use-fetch-cryptos';
 import { CryptoToken } from '@/types/types';
 
+const mockToggleFavorite = jest.fn();
+const mockIsFavorite = jest.fn((id: string) => false);
+
+// Mock the favorites store
+jest.mock('@/store/favorites', () => ({
+  useFavoritesStore: () => ({
+    favorites: [],
+    addFavorite: jest.fn(),
+    removeFavorite: jest.fn(),
+    toggleFavorite: mockToggleFavorite,
+    isFavorite: mockIsFavorite,
+  }),
+}));
+
 jest.mock('@/hooks/use-fetch-cryptos');
 const mockUseFetchCryptos = useFetchCryptos as jest.MockedFunction<any>;
+
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({
+    navigate: jest.fn(),
+    goBack: jest.fn(),
+    canGoBack: jest.fn(() => true),
+  }),
+}));
 
 jest.mock('lodash', () => ({
   debounce: (fn: any, _delay: number = 300) => {

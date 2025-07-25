@@ -27,14 +27,11 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<
 
 const Home = () => {
   const { data, isLoading, isError, error } = useFetchCryptos();
-  console.log(useFavoritesStore.toString());
   const [filter, setFilter] = useState('');
   const [debouncedFilter, setDebouncedFilter] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
 
-  const toggleFavorite = useFavoritesStore(state => state.toggleFavorite);
-  const isFavorite = useFavoritesStore(state => state.isFavorite);
-
+  const { toggleFavorite, isFavorite } = useFavoritesStore();
   const debouncedSetFilter = useMemo(
     () =>
       debounce((value: string) => {
