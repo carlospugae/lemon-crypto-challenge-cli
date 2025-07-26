@@ -422,7 +422,7 @@ describe('Home Component', () => {
       expect(screen.getByText('Bitcoin (BTC)')).toBeTruthy();
     });
 
-    it('should render FlatList with correct data', () => {
+    it('should render LegendList with correct data', () => {
       renderHome();
 
       // Verify that all cryptocurrency items are rendered

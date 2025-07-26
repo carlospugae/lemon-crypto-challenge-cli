@@ -1,12 +1,7 @@
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  Switch,
-  StyleSheet,
-} from 'react-native';
+import { View, Switch, StyleSheet, FlatList } from 'react-native';
 import React, { useEffect, useState, useMemo } from 'react';
 import { debounce } from 'lodash';
+import { LegendList } from '@legendapp/list';
 import { useFetchCryptos } from '@/hooks/use-fetch-cryptos';
 import { useFavoritesStore } from '@/store/favorites';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -19,6 +14,7 @@ import {
   SearchSkeleton,
   Text,
 } from '@/components';
+import { CryptoToken } from '@/types/types';
 
 type RootStackParamList = {
   Home: undefined;
@@ -72,6 +68,17 @@ const Home = () => {
     navigation.navigate('Details', { id });
   };
 
+  const renderItem = ({ item }: { item: CryptoToken }) => (
+    <CryptoCard
+      crypto={item}
+      isFavorite={isFavorite(item.id)}
+      onPress={handleGoToDetails}
+      onToggleFavorite={toggleFavorite}
+    />
+  );
+
+  const keyExtractor = (item: CryptoToken) => item.id;
+
   if (isLoading) {
     return (
       <View style={styles.container}>
@@ -103,7 +110,6 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      {/* Search and Filter Header */}
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <SearchInput
@@ -131,17 +137,10 @@ const Home = () => {
         </View>
       </View>
       <View style={styles.listContainer}>
-        <FlatList
-          data={filteredData}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <CryptoCard
-              crypto={item}
-              isFavorite={isFavorite(item.id)}
-              onPress={handleGoToDetails}
-              onToggleFavorite={toggleFavorite}
-            />
-          )}
+        <LegendList
+          data={filteredData || []}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Text variant="body" color="gray.500" style={styles.emptyText}>
