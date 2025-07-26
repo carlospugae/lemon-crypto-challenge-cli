@@ -94,6 +94,8 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                 fontWeight="semibold"
                 color="gray.900"
                 style={styles.nameText}
+                ellipsize={true}
+                numberOfLines={1}
               >
                 {`${crypto.name} (${crypto.symbol})`}
               </Text>

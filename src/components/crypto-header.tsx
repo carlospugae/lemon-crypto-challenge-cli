@@ -61,7 +61,7 @@ const CryptoHeader: React.FC<CryptoHeaderProps> = ({
         </View>
         <View style={styles.titleRow}>
           <Text
-            variant="h3"
+            variant="h4"
             color="gray.900"
             numberOfLines={1}
             accessibilityRole="header"
