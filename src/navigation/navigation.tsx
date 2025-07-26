@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Details from '@/screens/details';
 import Login from '@/screens/login';
 import Home from '@/screens/home';
+import Profile from '@/screens/profile';
 import { useIsSignedIn, useIsSignedOut } from '@/context/AuthContext';
 
 declare global {
@@ -18,6 +19,7 @@ export const SCREENS = {
   HOME: 'Home',
   LOGIN: 'Login',
   DETAILS: 'Details',
+  PROFILE: 'Profile',
 };
 
 const RootStack = createNativeStackNavigator({
@@ -27,6 +29,7 @@ const RootStack = createNativeStackNavigator({
       screens: {
         [SCREENS.HOME]: Home,
         [SCREENS.DETAILS]: Details,
+        [SCREENS.PROFILE]: Profile,
       },
     },
     unauthenticated: {

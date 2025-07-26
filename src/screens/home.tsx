@@ -1,4 +1,10 @@
-import { View, Switch, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Switch,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import React, { useEffect, useState, useMemo } from 'react';
 import { debounce } from 'lodash';
 import { LegendList } from '@legendapp/list';
@@ -20,6 +26,7 @@ type RootStackParamList = {
   Home: undefined;
   Details: { id: string };
   Login: undefined;
+  Profile: undefined;
 };
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -68,6 +75,10 @@ const Home = () => {
     navigation.navigate('Details', { id });
   };
 
+  const handleGoToProfile = () => {
+    navigation.navigate('Profile');
+  };
+
   const renderItem = ({ item }: { item: CryptoToken }) => (
     <CryptoCard
       crypto={item}
@@ -111,6 +122,23 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <Text variant="h3" fontWeight="bold" color="gray.900">
+            Crypto Tracker
+          </Text>
+          <TouchableOpacity
+            style={styles.profileButton}
+            onPress={handleGoToProfile}
+            accessible={true}
+            accessibilityLabel="Go to profile"
+            accessibilityRole="button"
+            accessibilityHint="Double tap to view your profile"
+          >
+            <Text variant="button" fontWeight="medium" color="primary.600">
+              Profile
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.searchContainer}>
           <SearchInput
             value={filter}
@@ -176,6 +204,18 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.lg,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.gray[100],
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: theme.spacing.lg,
+  },
+  profileButton: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.sm,
+    borderRadius: theme.borderRadius.md,
+    backgroundColor: theme.colors.primary[50],
   },
   searchContainer: {
     flexDirection: 'row',

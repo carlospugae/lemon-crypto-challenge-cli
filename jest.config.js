@@ -2,9 +2,11 @@ module.exports = {
   preset: 'react-native',
   moduleNameMapper: {
     '^@env$': '<rootDir>/__mocks__/@env.js',
+    '^@react-native-google-signin/google-signin$':
+      '<rootDir>/__mocks__/@react-native-google-signin/google-signin.ts',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-size-matters|react-native-vector-icons|react-native-skeleton-placeholder|@react-native-masked-view)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-size-matters|react-native-vector-icons|react-native-skeleton-placeholder|@react-native-masked-view|@react-native-google-signin)/)',
   ],
   testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/'],
   transform: {
