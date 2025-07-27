@@ -5,12 +5,15 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  Platform,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/context/AuthContext';
 import { theme } from '@/theme';
 import { Text } from '@/components';
 
 const Profile: React.FC = () => {
+  const insets = useSafeAreaInsets();
   const { user, signOut, isLoading } = useAuth();
 
   const handleLogout = (): void => {
@@ -36,7 +39,12 @@ const Profile: React.FC = () => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
+        ]}
+      >
         <View style={styles.loadingContainer}>
           <Text variant="body" color="gray.500">
             Loading profile...
@@ -47,7 +55,12 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
+      ]}
+    >
       <View style={styles.content}>
         {/* Header Section */}
         <View style={styles.header}>

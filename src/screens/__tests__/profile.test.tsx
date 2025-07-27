@@ -16,9 +16,12 @@ jest.mock('@react-navigation/native', () => ({
   }),
 }));
 
-/**
- * Test suite for Profile screen component
- */
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: () => ({
+    top: 0,
+  }),
+}));
+
 describe('Profile', () => {
   const mockUser: User = {
     user: {

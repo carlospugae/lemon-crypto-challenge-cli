@@ -5,10 +5,12 @@ import {
   FlatList,
   TouchableOpacity,
   StatusBar,
+  Platform,
 } from 'react-native';
 import React, { useEffect, useState, useMemo } from 'react';
 import { debounce } from 'lodash';
 import { LegendList } from '@legendapp/list';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFetchCryptos } from '@/hooks/use-fetch-cryptos';
 import { useFavoritesStore } from '@/store/favorites';
 import { CompositeNavigationProp } from '@react-navigation/native';
@@ -42,6 +44,7 @@ type HomeScreenNavigationProp = CompositeNavigationProp<
 >;
 
 const Home = () => {
+  const insets = useSafeAreaInsets();
   const { data, isLoading, isError, error } = useFetchCryptos();
   const [filter, setFilter] = useState('');
   const [debouncedFilter, setDebouncedFilter] = useState('');
@@ -106,7 +109,12 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
+        ]}
+      >
         <SearchSkeleton />
         <View style={styles.listContainer}>
           <FlatList
@@ -125,7 +133,12 @@ const Home = () => {
 
   if (isError) {
     return (
-      <View style={styles.errorContainer}>
+      <View
+        style={[
+          styles.errorContainer,
+          { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
+        ]}
+      >
         <Text variant="body" color="error.600" style={styles.errorText}>
           Error: {error?.message || 'Failed to load data.'}
         </Text>
@@ -134,7 +147,12 @@ const Home = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
+      ]}
+    >
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <SearchInput

@@ -44,6 +44,12 @@ jest.mock('@react-navigation/native', () => ({
   }),
 }));
 
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: () => ({
+    top: 0,
+  }),
+}));
+
 jest.mock('lodash', () => ({
   debounce: (fn: any, _delay: number = 300) => {
     const debounced = (...args: any[]) => {

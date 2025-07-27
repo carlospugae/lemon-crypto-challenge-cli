@@ -32,6 +32,11 @@ function App() {
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <SafeAreaView style={styles.container}>
+            <StatusBar
+              barStyle="dark-content"
+              backgroundColor="transparent"
+              translucent={true}
+            />
             <Navigation />
           </SafeAreaView>
         </QueryClientProvider>
