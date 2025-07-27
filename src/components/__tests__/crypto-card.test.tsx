@@ -2,6 +2,14 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import CryptoCard from '../crypto-card';
 import { CryptoToken } from '@/types/types';
+import { useFavoritesStore } from '@/store/favorites';
+
+// Mock the favorites store
+jest.mock('@/store/favorites');
+
+const mockUseFavoritesStore = useFavoritesStore as jest.MockedFunction<
+  typeof useFavoritesStore
+>;
 
 const mockCryptoToken: CryptoToken = {
   id: 'bitcoin',
@@ -61,6 +69,8 @@ const mockOnToggleFavorite = jest.fn();
 describe('CryptoCard', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Default mock for unfavorited state
+    mockUseFavoritesStore.mockReturnValue([]);
   });
 
   describe('Rendering', () => {
@@ -68,7 +78,6 @@ describe('CryptoCard', () => {
       const { getByText, getByLabelText, getByTestId } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -103,7 +112,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={mockCryptoTokenNegative}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -117,7 +125,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={mockCryptoTokenZero}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -131,7 +138,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={mockCryptoTokenLowPrice}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -150,7 +156,6 @@ describe('CryptoCard', () => {
       const { getByText, getByTestId } = render(
         <CryptoCard
           crypto={unknownCrypto}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -162,11 +167,13 @@ describe('CryptoCard', () => {
   });
 
   describe('Favorite functionality', () => {
-    it('should display unfavorited star when isFavorite is false', () => {
+    it('should display unfavorited star when crypto is not in favorites', () => {
+      // Mock unfavorited state
+      mockUseFavoritesStore.mockReturnValue([]);
+
       const { getByText, getByLabelText, getByTestId } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -176,11 +183,13 @@ describe('CryptoCard', () => {
       expect(getByLabelText('Favorite Bitcoin')).toBeTruthy();
     });
 
-    it('should display favorited star when isFavorite is true', () => {
+    it('should display favorited star when crypto is in favorites', () => {
+      // Mock favorited state
+      mockUseFavoritesStore.mockReturnValue(['bitcoin']);
+
       const { getByText, getByLabelText, getByTestId } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={true}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -194,7 +203,6 @@ describe('CryptoCard', () => {
       const { getByLabelText } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -213,7 +221,6 @@ describe('CryptoCard', () => {
       const { getByLabelText } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -232,7 +239,6 @@ describe('CryptoCard', () => {
       const { getByLabelText } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -251,7 +257,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -265,7 +270,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={mockCryptoTokenNegative}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -279,7 +283,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={mockCryptoTokenZero}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -295,7 +298,6 @@ describe('CryptoCard', () => {
       const { getByLabelText } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -311,7 +313,6 @@ describe('CryptoCard', () => {
       const { getByLabelText } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -322,10 +323,12 @@ describe('CryptoCard', () => {
     });
 
     it('should have proper accessibility props for favorite button when favorited', () => {
+      // Mock favorited state
+      mockUseFavoritesStore.mockReturnValue(['bitcoin']);
+
       const { getByLabelText } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={true}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -351,7 +354,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={largeMarketCapCrypto}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -374,7 +376,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={smallMarketCapCrypto}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -397,7 +398,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={highChangeCrypto}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -420,7 +420,6 @@ describe('CryptoCard', () => {
       const { getByText } = render(
         <CryptoCard
           crypto={negativeChangeCrypto}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
         />,
@@ -437,7 +436,6 @@ describe('CryptoCard', () => {
       const { getByLabelText } = render(
         <CryptoCard
           crypto={mockCryptoToken}
-          isFavorite={false}
           onPress={mockOnPress}
           onToggleFavorite={mockOnToggleFavorite}
           style={customStyle}

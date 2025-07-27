@@ -47,7 +47,13 @@ const Home = () => {
   const [debouncedFilter, setDebouncedFilter] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
 
-  const { toggleFavorite, isFavorite } = useFavoritesStore();
+  const toggleFavorite = useFavoritesStore(state => state.toggleFavorite);
+  const favorites = useFavoritesStore(state => state.favorites);
+
+  const isFavorite = useMemo(() => {
+    return (id: string) => favorites.includes(id);
+  }, [favorites]);
+
   const debouncedSetFilter = useMemo(
     () =>
       debounce((value: string) => {
@@ -64,18 +70,20 @@ const Home = () => {
     };
   }, [filter, debouncedSetFilter]);
 
-  const filteredData = data?.filter(item => {
-    const search = debouncedFilter.trim().toLowerCase();
+  const filteredData = useMemo(() => {
+    return data?.filter(item => {
+      const search = debouncedFilter.trim().toLowerCase();
 
-    const matchesFilter =
-      !search ||
-      item.name.toLowerCase().includes(search) ||
-      item.symbol.toLowerCase().includes(search);
+      const matchesFilter =
+        !search ||
+        item.name.toLowerCase().includes(search) ||
+        item.symbol.toLowerCase().includes(search);
 
-    const matchesFavorite = !showFavorites || isFavorite(item.id);
+      const matchesFavorite = !showFavorites || isFavorite(item.id);
 
-    return matchesFilter && matchesFavorite;
-  });
+      return matchesFilter && matchesFavorite;
+    });
+  }, [data, debouncedFilter, showFavorites, isFavorite]);
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
   const handleGoToDetails = (id: string) => {
@@ -89,7 +97,6 @@ const Home = () => {
   const renderItem = ({ item }: { item: CryptoToken }) => (
     <CryptoCard
       crypto={item}
-      isFavorite={isFavorite(item.id)}
       onPress={handleGoToDetails}
       onToggleFavorite={toggleFavorite}
     />

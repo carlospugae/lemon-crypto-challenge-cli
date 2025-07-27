@@ -23,7 +23,8 @@ const Details = () => {
   const route = useRoute<DetailsRouteProp>();
   const { id } = route.params;
 
-  const isFavorite = useFavoritesStore(state => state.isFavorite(id));
+  const favorites = useFavoritesStore(state => state.favorites);
+  const isFavorite = favorites.includes(id);
   const toggleFavorite = useFavoritesStore(state => state.toggleFavorite);
 
   const {

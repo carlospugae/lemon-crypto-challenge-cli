@@ -16,13 +16,21 @@ const mockIsFavorite = jest.fn((id: string) => false);
 
 // Mock the favorites store
 jest.mock('@/store/favorites', () => ({
-  useFavoritesStore: () => ({
-    favorites: [],
-    addFavorite: jest.fn(),
-    removeFavorite: jest.fn(),
-    toggleFavorite: mockToggleFavorite,
-    isFavorite: mockIsFavorite,
-  }),
+  useFavoritesStore: (selector: any) => {
+    const mockState = {
+      favorites: [],
+      addFavorite: jest.fn(),
+      removeFavorite: jest.fn(),
+      toggleFavorite: mockToggleFavorite,
+      isFavorite: mockIsFavorite,
+    };
+
+    if (typeof selector === 'function') {
+      return selector(mockState);
+    }
+
+    return mockState;
+  },
 }));
 
 jest.mock('@/hooks/use-fetch-cryptos');

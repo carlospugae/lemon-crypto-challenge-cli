@@ -10,6 +10,8 @@ module.exports = {
       '<rootDir>/__mocks__/@react-native-vector-icons/fontawesome6.js',
     '^@react-native-vector-icons/common$':
       '<rootDir>/__mocks__/@react-native-vector-icons/common.ts',
+    '^react-native-encrypted-storage$':
+      '<rootDir>/__mocks__/react-native-encrypted-storage.ts',
   },
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-size-matters|react-native-vector-icons|react-native-skeleton-placeholder|@react-native-masked-view|@react-native-google-signin)/)',

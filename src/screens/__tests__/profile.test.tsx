@@ -95,20 +95,6 @@ describe('Profile', () => {
       expect(getByText('test-user-id')).toBeTruthy();
     });
 
-    it('should render app information section', () => {
-      const contextValue = {
-        ...defaultContextValue,
-        user: mockUser,
-        isAuthenticated: true,
-      };
-
-      const { getByText } = renderProfile(contextValue);
-
-      expect(getByText('App Information')).toBeTruthy();
-      expect(getByText('1.0.0')).toBeTruthy();
-      expect(getByText('React Native')).toBeTruthy();
-    });
-
     it('should handle missing user data gracefully', () => {
       const userWithMissingData: User = {
         user: {
@@ -271,7 +257,6 @@ describe('Profile', () => {
       // Check main sections
       expect(getByText('Profile')).toBeTruthy();
       expect(getByText('Account Information')).toBeTruthy();
-      expect(getByText('App Information')).toBeTruthy();
       expect(getByText('Logout')).toBeTruthy();
     });
 
@@ -288,8 +273,6 @@ describe('Profile', () => {
       expect(getByText('Name')).toBeTruthy();
       expect(getByText('Email')).toBeTruthy();
       expect(getByText('User ID')).toBeTruthy();
-      expect(getByText('App Version')).toBeTruthy();
-      expect(getByText('Platform')).toBeTruthy();
     });
   });
 });

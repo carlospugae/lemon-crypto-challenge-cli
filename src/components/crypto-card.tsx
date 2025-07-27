@@ -4,10 +4,10 @@ import { theme } from '@/theme';
 import { formatPrice, formatMarketCap } from '@/utils/crypto';
 import { CryptoToken } from '@/types/types';
 import { Text, Icon } from '@/components';
+import { useFavoritesStore } from '@/store/favorites';
 
 interface CryptoCardProps {
   crypto: CryptoToken;
-  isFavorite: boolean;
   onPress: (id: string) => void;
   onToggleFavorite: (id: string) => void;
   style?: any;
@@ -15,11 +15,12 @@ interface CryptoCardProps {
 
 const CryptoCard: React.FC<CryptoCardProps> = ({
   crypto,
-  isFavorite,
   onPress,
   onToggleFavorite,
   style,
 }) => {
+  const favorites = useFavoritesStore(state => state.favorites);
+  const isFavorite = favorites.includes(crypto.id);
   const handlePress = () => {
     onPress(crypto.id);
   };
