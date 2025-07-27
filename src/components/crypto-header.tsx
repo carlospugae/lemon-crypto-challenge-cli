@@ -3,7 +3,6 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { theme } from '../theme';
 import { Badge, Text } from './index';
-import CryptoIcon from './crypto-icon';
 
 interface CryptoHeaderProps {
   crypto: {
@@ -57,7 +56,7 @@ const CryptoHeader: React.FC<CryptoHeaderProps> = ({
           </TouchableOpacity>
         </View>
         <View style={styles.iconCircle}>
-          <CryptoIcon symbol={crypto.symbol} size={64} color="white" />
+          {/* <CryptoIcon symbol={crypto.symbol} size={64} color="white" /> */}
         </View>
         <View style={styles.titleRow}>
           <Text
