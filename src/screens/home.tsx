@@ -4,12 +4,15 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import React, { useEffect, useState, useMemo } from 'react';
 import { debounce } from 'lodash';
 import { LegendList } from '@legendapp/list';
 import { useFetchCryptos } from '@/hooks/use-fetch-cryptos';
 import { useFavoritesStore } from '@/store/favorites';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '@/theme';
@@ -22,16 +25,20 @@ import {
 } from '@/components';
 import { CryptoToken } from '@/types/types';
 
-type RootStackParamList = {
+type TabParamList = {
   Home: undefined;
-  Details: { id: string };
-  Login: undefined;
   Profile: undefined;
 };
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
+type RootStackParamList = {
+  Tabs: undefined;
+  Details: { id: string };
+  Login: undefined;
+};
+
+type HomeScreenNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<TabParamList, 'Home'>,
+  NativeStackNavigationProp<RootStackParamList>
 >;
 
 const Home = () => {
@@ -122,23 +129,6 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <Text variant="h3" fontWeight="bold" color="gray.900">
-            Crypto Tracker
-          </Text>
-          <TouchableOpacity
-            style={styles.profileButton}
-            onPress={handleGoToProfile}
-            accessible={true}
-            accessibilityLabel="Go to profile"
-            accessibilityRole="button"
-            accessibilityHint="Double tap to view your profile"
-          >
-            <Text variant="button" fontWeight="medium" color="primary.600">
-              Profile
-            </Text>
-          </TouchableOpacity>
-        </View>
         <View style={styles.searchContainer}>
           <SearchInput
             value={filter}

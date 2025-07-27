@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Navigation from './src/navigation/navigation';
 import { AuthProvider } from './src/context/AuthContext';
@@ -16,10 +16,12 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <SafeAreaProvider style={styles.container}>
+    <SafeAreaProvider>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          <Navigation />
+          <SafeAreaView style={styles.container}>
+            <Navigation />
+          </SafeAreaView>
         </QueryClientProvider>
       </AuthProvider>
     </SafeAreaProvider>

@@ -10,20 +10,9 @@ import { useAuth } from '@/context/AuthContext';
 import { theme } from '@/theme';
 import { Text } from '@/components';
 
-/**
- * Profile screen component that displays user information and logout functionality
- *
- * @example
- * ```tsx
- * <Profile />
- * ```
- */
 const Profile: React.FC = () => {
   const { user, signOut, isLoading } = useAuth();
 
-  /**
-   * Handles the logout process with confirmation dialog
-   */
   const handleLogout = (): void => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
       {
@@ -58,7 +47,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
       <View style={styles.content}>
         {/* Header Section */}
         <View style={styles.header}>
@@ -118,37 +107,7 @@ const Profile: React.FC = () => {
           </View>
         </View>
 
-        {/* App Information Section */}
-        <View style={styles.section}>
-          <Text
-            variant="h5"
-            fontWeight="semibold"
-            color="gray.900"
-            style={styles.sectionTitle}
-          >
-            App Information
-          </Text>
-
-          <View style={styles.infoCard}>
-            <View style={styles.infoRow}>
-              <Text variant="body" color="gray.600" style={styles.label}>
-                App Version
-              </Text>
-              <Text variant="body" fontWeight="medium" color="gray.900">
-                1.0.0
-              </Text>
-            </View>
-
-            <View style={styles.infoRow}>
-              <Text variant="body" color="gray.600" style={styles.label}>
-                Platform
-              </Text>
-              <Text variant="body" fontWeight="medium" color="gray.900">
-                React Native
-              </Text>
-            </View>
-          </View>
-        </View>
+        <View style={styles.spacer} />
 
         {/* Logout Section */}
         <View style={styles.section}>
@@ -167,18 +126,19 @@ const Profile: React.FC = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: theme.colors.gray[50],
+    flex: 1,
   },
   content: {
     paddingHorizontal: theme.spacing['2xl'],
     paddingVertical: theme.spacing.lg,
+    flex: 1,
   },
   loadingContainer: {
     flex: 1,
@@ -222,6 +182,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     ...theme.shadows.sm,
+  },
+  spacer: {
+    flex: 1,
   },
 });
 
