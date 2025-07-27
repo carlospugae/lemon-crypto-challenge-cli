@@ -13,6 +13,9 @@
     "@legendapp/list": "^1.1.4",
     "@react-native-google-signin/google-signin": "^15.0.0",
     "@react-native-masked-view/masked-view": "^0.2.9",
+    "@react-native-vector-icons/common": "^12.2.0",
+    "@react-native-vector-icons/feather": "^12.2.0",
+    "@react-native-vector-icons/fontawesome6": "^12.1.0",
     "@react-native/new-app-screen": "0.80.1",
     "@react-navigation/bottom-tabs": "^7.4.4",
     "@react-navigation/native": "^7.1.14",
@@ -30,7 +33,6 @@
     "react-native-screens": "^4.13.1",
     "react-native-size-matters": "^0.4.2",
     "react-native-skeleton-placeholder": "^5.2.4",
-    "react-native-vector-icons": "^10.3.0",
     "zustand": "^5.0.6"
   },
   "devDependencies": {

@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { theme } from '../theme';
-import { Badge, Text } from './index';
+import { Badge, Text, Icon } from './index';
 
 interface CryptoHeaderProps {
   crypto: {
@@ -44,14 +43,15 @@ const CryptoHeader: React.FC<CryptoHeaderProps> = ({
             }
             style={styles.actionButton}
           >
-            <FontAwesome5
+            <Icon
+              family="fontawesome6"
               name="star"
               size={20}
               color={
                 isFavorite ? theme.colors.warning[400] : theme.colors.gray[400]
               }
               solid={isFavorite}
-              accessibilityLabel={isFavorite ? 'Favorited' : 'Not favorited'}
+              testID={isFavorite ? 'favorited' : 'not-favorited'}
             />
           </TouchableOpacity>
         </View>

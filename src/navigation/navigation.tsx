@@ -5,7 +5,6 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Feather from 'react-native-vector-icons/Feather';
 import { Platform } from 'react-native';
 import Details from '@/screens/details';
 import Login from '@/screens/login';
@@ -13,6 +12,7 @@ import Home from '@/screens/home';
 import Profile from '@/screens/profile';
 import { useIsSignedIn, useIsSignedOut } from '@/context/AuthContext';
 import { theme } from '@/theme';
+import { Icon } from '@/components';
 
 declare global {
   namespace ReactNavigation {
@@ -51,7 +51,7 @@ const AuthenticatedTabs = createBottomTabNavigator({
       options: {
         tabBarLabel: 'Home',
         tabBarIcon: ({ color, size }) => (
-          <Feather name="home" size={size} color={color} />
+          <Icon family="feather" name="home" size={size} color={color} />
         ),
       },
     },
@@ -60,7 +60,7 @@ const AuthenticatedTabs = createBottomTabNavigator({
       options: {
         tabBarLabel: 'Profile',
         tabBarIcon: ({ color, size }) => (
-          <Feather name="user" size={size} color={color} />
+          <Icon family="feather" name="user" size={size} color={color} />
         ),
       },
     },

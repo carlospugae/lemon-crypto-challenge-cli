@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
 import { theme } from '../theme';
-import { Text } from './index';
+import { Text, Icon } from './index';
 import { formatPrice } from '@/utils/crypto';
 
 interface PriceDisplayProps {
@@ -23,13 +22,15 @@ const PriceDisplay: React.FC<PriceDisplayProps> = ({
       </Text>
       <View style={styles.priceChangeRow}>
         {isPositive ? (
-          <Feather
+          <Icon
+            family="feather"
             name="trending-up"
             size={16}
             color={theme.colors.success[600]}
           />
         ) : (
-          <Feather
+          <Icon
+            family="feather"
             name="trending-down"
             size={16}
             color={theme.colors.error[600]}

@@ -1,11 +1,9 @@
 import React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { theme } from '@/theme';
 import { formatPrice, formatMarketCap } from '@/utils/crypto';
 import { CryptoToken } from '@/types/types';
-import { Text } from '@/components';
+import { Text, Icon } from '@/components';
 
 interface CryptoCardProps {
   crypto: CryptoToken;
@@ -98,7 +96,8 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
               {formatPrice(crypto.quote.USD.price)}
             </Text>
             <View style={styles.changeContainer}>
-              <Feather
+              <Icon
+                family="feather"
                 name={getChangeIcon()}
                 size={12}
                 color={getChangeColor()}
@@ -127,7 +126,8 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                 : `Favorite ${crypto.name}`
             }
           >
-            <FontAwesome5
+            <Icon
+              family="fontawesome6"
               name="star"
               size={20}
               color={

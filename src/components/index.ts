@@ -4,6 +4,7 @@ export { default as CryptoCardSkeleton } from './crypto-card.skeleton';
 export { default as CryptoHeader } from './crypto-header';
 export { default as CryptoHeaderSkeleton } from './crypto-header.skeleton';
 export { default as DetailsSkeleton } from './details.skeleton';
+export { default as Icon } from './icon';
 export { default as MarketStats } from './market-stats';
 export { default as MarketStatsSkeleton } from './market-stats.skeleton';
 export { default as PriceDisplay } from './price-display';
