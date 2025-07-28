@@ -56,7 +56,9 @@ const CryptoHeader: React.FC<CryptoHeaderProps> = ({
           </TouchableOpacity>
         </View>
         <View style={styles.iconCircle}>
-          {/* <CryptoIcon symbol={crypto.symbol} size={64} color="white" /> */}
+          <Text color="white" fontSize="xl" fontWeight="bold">
+            {crypto.symbol}
+          </Text>
         </View>
         <View style={styles.titleRow}>
           <Text
@@ -68,15 +70,6 @@ const CryptoHeader: React.FC<CryptoHeaderProps> = ({
           >
             {crypto.name}
           </Text>
-          <View style={styles.badgeContainer}>
-            <Badge
-              variant="secondary"
-              style={styles.symbolBadge}
-              textStyle={styles.symbolBadgeText}
-            >
-              {crypto.symbol}
-            </Badge>
-          </View>
         </View>
       </View>
     </View>
@@ -88,7 +81,7 @@ const styles = StyleSheet.create({
     width: 92,
     height: 92,
     borderRadius: theme.borderRadius.full,
-    backgroundColor: theme.colors.warning[400],
+    backgroundColor: theme.colors.primary[400],
     alignItems: 'center',
     justifyContent: 'center',
   },
