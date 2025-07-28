@@ -6,6 +6,7 @@ import {
   Alert,
   ScrollView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/context/AuthContext';
@@ -36,18 +37,6 @@ const Profile: React.FC = () => {
       },
     ]);
   };
-
-  if (isLoading) {
-    return (
-      <View style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={styles.loadingContainer}>
-          <Text variant="body" color="gray.500">
-            Loading profile...
-          </Text>
-        </View>
-      </View>
-    );
-  }
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -123,9 +112,15 @@ const Profile: React.FC = () => {
             accessibilityRole="button"
             accessibilityHint="Double tap to logout from your account"
           >
-            <Text variant="button" fontWeight="semibold" color="white">
-              Logout
-            </Text>
+            {isLoading ? (
+              <ActivityIndicator color={theme.colors.gray[900]} />
+            ) : (
+              <>
+                <Text variant="button" fontWeight="semibold" color="white">
+                  Logout
+                </Text>
+              </>
+            )}
           </TouchableOpacity>
         </View>
       </View>
