@@ -2,7 +2,7 @@
 
 A cross-platform React Native app to track cryptocurrencies, built as a technical challenge showcasing modern development practices and clean architecture.
 
-See [REQUIREMENTS.md](./REQUIREMENTS.md) for full challenge requirements.
+See [REQUIREMENTS.md](./docs/REQUIREMENTS.md) for full challenge requirements.
 
 ## Features
 
