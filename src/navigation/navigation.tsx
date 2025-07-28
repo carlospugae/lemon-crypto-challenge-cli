@@ -6,6 +6,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Details from '@/screens/details';
 import Login from '@/screens/login';
 import Home from '@/screens/home';
@@ -27,45 +28,58 @@ export const SCREENS = {
   PROFILE: 'Profile',
 };
 
-const AuthenticatedTabs = createBottomTabNavigator({
-  screenOptions: {
-    tabBarActiveTintColor: theme.colors.primary[500],
-    tabBarInactiveTintColor: theme.colors.gray[400],
-    tabBarStyle: {
-      backgroundColor: theme.colors.white,
-      borderTopColor: theme.colors.gray[200],
-      borderTopWidth: 1,
-      paddingBottom: 8,
-      paddingTop: 8,
-      height: 60,
-    },
-    tabBarLabelStyle: {
-      fontSize: 12,
-      fontWeight: '500',
-    },
-    headerShown: false,
-  },
-  screens: {
-    [SCREENS.HOME]: {
-      screen: Home,
-      options: {
-        tabBarLabel: 'Home',
-        tabBarIcon: ({ color, size }) => (
-          <Icon family="feather" name="home" size={size} color={color} />
-        ),
-      },
-    },
-    [SCREENS.PROFILE]: {
-      screen: Profile,
-      options: {
-        tabBarLabel: 'Profile',
-        tabBarIcon: ({ color, size }) => (
-          <Icon family="feather" name="user" size={size} color={color} />
-        ),
-      },
-    },
-  },
-});
+/**
+ * Custom tab navigator component that handles safe area insets
+ * to ensure proper spacing on Android devices
+ */
+const AuthenticatedTabsComponent: React.FC = () => {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <AuthenticatedTabs.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: theme.colors.primary[500],
+        tabBarInactiveTintColor: theme.colors.gray[400],
+        tabBarStyle: {
+          backgroundColor: theme.colors.white,
+          borderTopColor: theme.colors.gray[200],
+          borderTopWidth: 1,
+          paddingBottom: Platform.OS === 'android' ? insets.bottom + 8 : 8,
+          paddingTop: 8,
+          height: Platform.OS === 'android' ? 60 + insets.bottom : 60,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
+        headerShown: false,
+      }}
+    >
+      <AuthenticatedTabs.Screen
+        name={SCREENS.HOME}
+        component={Home}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <Icon family="feather" name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <AuthenticatedTabs.Screen
+        name={SCREENS.PROFILE}
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Icon family="feather" name="user" size={size} color={color} />
+          ),
+        }}
+      />
+    </AuthenticatedTabs.Navigator>
+  );
+};
+
+const AuthenticatedTabs = createBottomTabNavigator();
 
 const RootStack = createNativeStackNavigator({
   screenOptions: {
@@ -78,7 +92,7 @@ const RootStack = createNativeStackNavigator({
       if: useIsSignedIn,
       screens: {
         Tabs: {
-          screen: AuthenticatedTabs,
+          screen: AuthenticatedTabsComponent,
           options: {
             headerShown: false,
             gestureEnabled: false,
