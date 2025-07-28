@@ -13,8 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/context';
 import { Text } from '@/components';
 import { theme } from '@/theme';
-
-const { width, height } = Dimensions.get('window');
+import Icon from '@/components/icon';
 
 function Login() {
   const { signIn, isLoading, error } = useAuth();
@@ -77,9 +76,13 @@ function Login() {
             ) : (
               <>
                 {/* Google Icon */}
-                <View style={styles.googleIcon}>
-                  <Text style={styles.googleIconText}>G</Text>
-                </View>
+                <Icon
+                  family="fontawesome6"
+                  name="google"
+                  iconStyle="brand"
+                  size={20}
+                  color={theme.colors.gray[900]}
+                />
                 <Text
                   variant="button"
                   color="gray.900"

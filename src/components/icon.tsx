@@ -13,6 +13,7 @@ export interface IconComponentProps {
   style?: StyleProp<ViewStyle>;
   testID?: string;
   solid?: boolean;
+  iconStyle?: 'brand' | 'solid' | 'regular' | 'light' | 'thin' | 'duotone';
 }
 
 const Icon: React.FC<IconComponentProps> = ({
@@ -23,6 +24,7 @@ const Icon: React.FC<IconComponentProps> = ({
   style,
   testID,
   solid,
+  iconStyle = 'regular',
   ...props
 }) => {
   const iconProps = {
@@ -31,6 +33,7 @@ const Icon: React.FC<IconComponentProps> = ({
     color,
     style,
     testID,
+    iconStyle,
     ...props,
   };
 
