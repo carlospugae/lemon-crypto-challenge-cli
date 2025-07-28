@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, ScrollView, RefreshControl, StyleSheet } from 'react-native';
+import {
+  View,
+  ScrollView,
+  RefreshControl,
+  StyleSheet,
+  Button,
+} from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { theme } from '../theme';
 import {
@@ -53,6 +59,7 @@ const Details = () => {
         <Text variant="body" color="error.600" accessibilityRole="text">
           Error loading crypto details. Please try again.
         </Text>
+        <Button title="Retry" onPress={() => refetch()} />
       </View>
     );
   }

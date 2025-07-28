@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Platform,
+  Button,
 } from 'react-native';
 import React, { useEffect, useState, useMemo } from 'react';
 import { debounce } from 'lodash';
@@ -45,7 +46,7 @@ type HomeScreenNavigationProp = CompositeNavigationProp<
 
 const Home = () => {
   const insets = useSafeAreaInsets();
-  const { data, isLoading, isError, error } = useFetchCryptos();
+  const { data, isLoading, isError, error, refetch } = useFetchCryptos();
   const [filter, setFilter] = useState('');
   const [debouncedFilter, setDebouncedFilter] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
@@ -142,6 +143,7 @@ const Home = () => {
         <Text variant="body" color="error.600" style={styles.errorText}>
           Error: {error?.message || 'Failed to load data.'}
         </Text>
+        <Button title="Retry" onPress={() => refetch()} />
       </View>
     );
   }

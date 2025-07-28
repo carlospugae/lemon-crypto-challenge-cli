@@ -82,17 +82,18 @@ function Login() {
           </Pressable>
 
           {/* Error Message */}
-          {error && (
-            <Text
-              variant="bodySmall"
-              color="error.500"
-              style={styles.errorText}
-              align="center"
-            >
-              {error}
-            </Text>
-          )}
         </View>
+        {error && (
+          <Text
+            variant="bodySmall"
+            color="error.500"
+            style={styles.errorText}
+            align="center"
+            fontWeight="bold"
+          >
+            {error}
+          </Text>
+        )}
       </View>
     </View>
   );
