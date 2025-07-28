@@ -12,7 +12,7 @@
   "dependencies": {
     "@legendapp/list": "^1.1.4",
     "@react-native-google-signin/google-signin": "^15.0.0",
-    "@react-native-masked-view/masked-view": "^0.2.9",
+    "@react-native-masked-view/masked-view": "^0.3.2",
     "@react-native-vector-icons/common": "^12.2.0",
     "@react-native-vector-icons/feather": "^12.2.0",
     "@react-native-vector-icons/fontawesome6": "^12.1.0",
