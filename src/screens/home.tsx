@@ -134,12 +134,7 @@ const Home = () => {
 
   if (isError) {
     return (
-      <View
-        style={[
-          styles.errorContainer,
-          { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
-        ]}
-      >
+      <View style={[styles.errorContainer, { paddingTop: insets.top }]}>
         <Text variant="body" color="error.600" style={styles.errorText}>
           Error: {error?.message || 'Failed to load data.'}
         </Text>
@@ -149,12 +144,7 @@ const Home = () => {
   }
 
   return (
-    <View
-      style={[
-        styles.container,
-        { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
-      ]}
-    >
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <SearchInput

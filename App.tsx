@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Navigation from './src/navigation/navigation';
 import { AuthProvider } from './src/context/AuthContext';
@@ -31,14 +31,14 @@ function App() {
     <SafeAreaProvider>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          <SafeAreaView style={styles.container}>
+          <View style={styles.container}>
             <StatusBar
               barStyle="dark-content"
               backgroundColor="transparent"
               translucent={true}
             />
             <Navigation />
-          </SafeAreaView>
+          </View>
         </QueryClientProvider>
       </AuthProvider>
     </SafeAreaProvider>

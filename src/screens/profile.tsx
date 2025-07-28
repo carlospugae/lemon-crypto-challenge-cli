@@ -39,12 +39,7 @@ const Profile: React.FC = () => {
 
   if (isLoading) {
     return (
-      <View
-        style={[
-          styles.container,
-          { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
-        ]}
-      >
+      <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.loadingContainer}>
           <Text variant="body" color="gray.500">
             Loading profile...
@@ -55,12 +50,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <View
-      style={[
-        styles.container,
-        { paddingTop: Platform.OS === 'android' ? insets.top : 0 },
-      ]}
-    >
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.content}>
         {/* Header Section */}
         <View style={styles.header}>

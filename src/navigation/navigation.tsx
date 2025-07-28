@@ -44,9 +44,9 @@ const AuthenticatedTabsComponent: React.FC = () => {
           backgroundColor: theme.colors.white,
           borderTopColor: theme.colors.gray[200],
           borderTopWidth: 1,
-          paddingBottom: Platform.OS === 'android' ? insets.bottom + 8 : 8,
+          paddingBottom: insets.bottom + 8,
           paddingTop: 8,
-          height: Platform.OS === 'android' ? 60 + insets.bottom : 60,
+          height: 60 + insets.bottom,
         },
         tabBarLabelStyle: {
           fontSize: 12,

@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAuth } from '@/context';
 import { Text } from '@/components';
@@ -17,6 +18,7 @@ const { width, height } = Dimensions.get('window');
 
 function Login() {
   const { signIn, isLoading, error } = useAuth();
+  const insets = useSafeAreaInsets();
 
   const handleGoogleLogin = () => {
     signIn();
@@ -31,7 +33,15 @@ function Login() {
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFillObject}
       />
-      <View style={styles.content}>
+      <View
+        style={[
+          styles.content,
+          {
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom + theme.spacing['4xl'],
+          },
+        ]}
+      >
         <View style={styles.brandingContainer}>
           <View style={styles.iconContainer}>
             <Image
@@ -106,11 +116,11 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: theme.spacing['2xl'],
-    paddingVertical: theme.spacing['4xl'],
   },
   brandingContainer: {
     alignItems: 'center',
     marginBottom: theme.spacing['6xl'],
+    marginTop: theme.spacing['4xl'],
   },
   iconContainer: {
     width: 96,
