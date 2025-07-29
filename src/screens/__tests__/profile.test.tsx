@@ -65,15 +65,28 @@ describe('Profile', () => {
    * Test that profile screen renders loading state correctly
    */
   describe('Loading State', () => {
-    it('should render loading message when isLoading is true', () => {
+    it('should render profile content with loading indicator in logout button when isLoading is true', () => {
       const contextValue = {
         ...defaultContextValue,
+        user: mockUser,
+        isAuthenticated: true,
         isLoading: true,
       };
 
-      const { getByText } = renderProfile(contextValue);
+      const { getByText, getByRole } = renderProfile(contextValue);
 
-      expect(getByText('Loading profile...')).toBeTruthy();
+      // Profile content should still be rendered
+      expect(getByText('Profile')).toBeTruthy();
+      expect(getByText('Manage your account settings')).toBeTruthy();
+      expect(getByText('Account Information')).toBeTruthy();
+      expect(getByText('John Doe')).toBeTruthy();
+      expect(getByText('john.doe@example.com')).toBeTruthy();
+
+      // Logout button should show loading indicator instead of text
+      const logoutButton = getByRole('button');
+      expect(logoutButton).toBeTruthy();
+      // The logout button should not contain the "Logout" text when loading
+      expect(() => getByText('Logout')).toThrow();
     });
   });
 
